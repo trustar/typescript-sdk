@@ -1,0 +1,6 @@
+{
+  "name": "typescript-sdk",
+  "dependencies": {
+    "superagent": "^5.3.1"
+  }
+}
