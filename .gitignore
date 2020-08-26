@@ -132,6 +132,10 @@ dist
 # to regenerate them between each branch switch.
 # Uncomment the following lines if you're not using Zero-Installs:
 .yarn/*
+!.yarn/releases/
+!.yarn/plugins/
+!.yarn/sdks/
+!.yarn/versions/
 .pnp.*
 # End of https://www.toptal.com/developers/gitignore/api/node,yarn,visualstudiocode
 .yarn/install-state.gz
