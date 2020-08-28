@@ -46,9 +46,11 @@ export class Indicator extends BaseModel {
      * @param [enclaveIds] A list of enclaves that the indicator is found in.
      * 
      */
-    constructor(value: string, type?: string, priorityLevel?: string, correlationCount?: number,
-        whiteListed?: boolean, weight?: number, reason?: string, firstSeen?: number, lastSeen?: number,
-        sightings?: number, source?: string, notes?: string, tags?: Array<Tag>, enclaveIds?: Array<string>) {
+    constructor({value, type, priorityLevel, correlationCount, whiteListed, weight, reason, firstSeen, 
+        lastSeen, sightings, source, notes, tags, enclaveIds}: {value: string, type?: string, priorityLevel?: string, 
+        correlationCount?: number, whiteListed?: boolean, weight?: number, reason?: string, firstSeen?: number, lastSeen?: number,
+        sightings?: number, source?: string, notes?: string, tags?: Array<Tag>, enclaveIds?: Array<string>}) {
+            
             super();
             this.value = value;
             this.type = type;

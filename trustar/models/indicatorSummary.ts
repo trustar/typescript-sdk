@@ -31,9 +31,10 @@ export class IndicatorSummary extends BaseModel {
      * @param [severityLevel] A normalized representation of the score from this source if one exists.
      *                     This is an integer between and 0 and 3; 0 being the lowest score.
      */
-    constructor(value?: string, indicatorType?: string, reportId?: string, enclaveId?: string,
+    constructor({value, indicatorType, reportId, enclaveId, source, score, created, updated, description,
+        attributes, severityLevel}: {value?: string, indicatorType?: string, reportId?: string, enclaveId?: string,
         source?: IntelligenceSource, score?: IndicatorScore, created?: number, updated?: number,
-        description?: string, attributes?: Array<Attribute>, severityLevel?: number) {
+        description?: string, attributes?: Array<Attribute>, severityLevel?: number} = {}) {
  
         super();
         this.value = value;
@@ -50,5 +51,51 @@ export class IndicatorSummary extends BaseModel {
     }
 }
 
-class IndicatorScore {}
-class Attribute {}
+
+/**
+ * Indicator score
+ */
+class IndicatorScore extends BaseModel {
+
+    name?: string;
+    value?: string;
+
+    /**
+     * Creates an instance of indicator score.
+     * @param [name] The name of the score type, e.g. "Risk Score"
+     * @param [value] The value of the score, as extracted from the source. 
+     */
+    constructor({name, value}: {name?: string, value?: string} = {}) {
+        
+        super();
+        this.name = name;
+        this.value = value;
+    }
+}
+
+class IndicatorAttribute extends BaseModel {
+
+    name?: string;
+    value?: string;
+    logicalType?: string;
+    description?: string;
+
+
+    /**
+     * Creates an instance of indicator attribute.
+     * @param [name] The name of the attribute, e.g. "Threat Actors".
+     * @param [value] The value of the attribute, e.g. "North Korea".
+     * @param [logicalType] Describes how to interpret the value field; i.e. could be a timestamp if value is number.
+     * @param [description] A description of how to interpret the attribute. Corresponds to an attribute name.
+     */
+    constructor({name, value, logicalType, description}: {name?: string, value?: string,
+        logicalType?: string, description?: string} = {}) {
+            
+            super();
+            this.name = name;
+            this.value = value;
+            this.logicalType = logicalType;
+            this.description = description;
+
+        }
+}

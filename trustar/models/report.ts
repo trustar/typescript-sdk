@@ -34,9 +34,10 @@ export class Report extends BaseModel {
      * @param [updated] The last time the report was updated.
      * 
      */
-    constructor(id?: string, title?: string, body?: string, timeBegan?: Date | number,
+    constructor({id, title, body, timeBegan, externalId, externalUrl, isEnclave, enclaveIds, created, updated}: 
+        {id?: string, title?: string, body?: string, timeBegan?: Date | number,
         externalId?: string, externalUrl?: string, isEnclave?: boolean,
-        enclaveIds?: Array<string> | string, created?: number, updated?: number) {
+        enclaveIds?: Array<string> | string, created?: number, updated?: number} = {}) {
         
         super();
 
