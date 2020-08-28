@@ -140,3 +140,9 @@ dist
 # End of https://www.toptal.com/developers/gitignore/api/node,yarn,visualstudiocode
 .yarn/install-state.gz
 .DS_Store
+
+# Ignore compiled JS files
+*.js
+
+# TruSTAR config file
+trustar.config.json

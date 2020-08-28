@@ -1,4 +1,4 @@
-export const enum IndicatorType {
+export enum IndicatorType {
     IP = "IP",
     CIDR_BLOCK = "CIDR_BLOCK",
     URL = "URL",
@@ -27,7 +27,7 @@ export const enum IdType {
 
 export const enum DistributionType {
     ENCLAVE = "ENCLAVE",
-    COMMUNIY = "COMMUNITY"
+    COMMUNITY = "COMMUNITY"
 }
 
 export const enum EnclaveType {

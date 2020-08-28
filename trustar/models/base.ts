@@ -2,10 +2,7 @@ export class BaseModel {
 
     constructor() {}
 
-    toJSON(removeNulls: boolean = false) {
-        if (removeNulls === true) {
-            Object.keys(this).forEach(k => (!this[k] && this[k] !== undefined) && delete this[k]);
-        }
-        return JSON.stringify(this);
+    removeNulls() {
+        return Object.keys(this).forEach(key => this[key] == null && delete this[key]);
     }
 }
