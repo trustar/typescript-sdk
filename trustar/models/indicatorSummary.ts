@@ -12,7 +12,7 @@ export class IndicatorSummary extends BaseModel {
     created?: number;
     updated?: number;
     description?: string;
-    attributes?: Array<Attribute>;
+    attributes?: Array<IndicatorAttribute>;
     severityLevel?: number = 0 | 1 | 2 | 3;
 
 
@@ -34,7 +34,7 @@ export class IndicatorSummary extends BaseModel {
     constructor({value, indicatorType, reportId, enclaveId, source, score, created, updated, description,
         attributes, severityLevel}: {value?: string, indicatorType?: string, reportId?: string, enclaveId?: string,
         source?: IntelligenceSource, score?: IndicatorScore, created?: number, updated?: number,
-        description?: string, attributes?: Array<Attribute>, severityLevel?: number} = {}) {
+        description?: string, attributes?: Array<IndicatorAttribute>, severityLevel?: number} = {}) {
  
         super();
         this.value = value;
@@ -73,6 +73,10 @@ class IndicatorScore extends BaseModel {
     }
 }
 
+
+/**
+ * IndicatorAttribute
+ */
 class IndicatorAttribute extends BaseModel {
 
     name?: string;

@@ -16,6 +16,7 @@ export class Tag extends BaseModel {
      * @param [enclaveId] The ID of the enclave associated with the tag.
      */
     constructor({name, id, enclaveId}: {name: string, id?: string, enclaveId?: string}) {
+        
         super();
         this.name = name;
         this.id = id;

@@ -15,7 +15,7 @@ export class IntelligenceSource extends BaseModel {
      * @param [key] A string that identifies the source. i.e. "virustotal"
      * @param [name] The human-readable name of the source. i.e. "VirusTotal"
      */
-    constructor(key?: string, name?: string) {
+    constructor({key, name}: {key?: string, name?: string} = {}) {
 
         super();
         this.key = key;

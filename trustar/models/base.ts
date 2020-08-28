@@ -2,7 +2,6 @@ export abstract class BaseModel {
 
     constructor() {}
 
-
     /**
      * Removes nulls
      * @returns Nothing. The object is edited in place. No new object is created.
