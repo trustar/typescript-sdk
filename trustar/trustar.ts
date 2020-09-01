@@ -117,8 +117,18 @@ class TruStar {
     return versionJson["sdk_version"];
   }
 
-  request() {
-    this.apiClient.request("GET", "reports");
+  async request() {
+    var res = await this.apiClient.get("ping");
+    return res;
+  }
+
+  async ping() {
+    return await this.apiClient.get("ping");
+  }
+
+  async print() {
+    var res = await this.request();
+    console.log(res);
   }
 }
 
@@ -128,4 +138,6 @@ class TruStar {
 // };
 
 var ts = new TruStar();
-ts.request();
+// var pong = ts.ping();
+// console.log(pong);
+ts.print();

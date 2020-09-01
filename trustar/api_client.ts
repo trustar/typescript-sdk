@@ -101,6 +101,10 @@ export class ApiClient {
     return headers;
   }
 
+  delay(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
   /**
    * Generic request method that handles logic to interact with different
    * TruSTAR's endpoints.
@@ -122,12 +126,12 @@ export class ApiClient {
     let attempted: boolean = false;
     let response: request.Response;
     while (!attempted || !retry) {
-      let base_headers: object = await this.getHeaders(true);
+      let base_headers: object = await this.getHeaders(
+        ["POST", "PUT"].includes(method)
+      );
       if (headers) {
         base_headers = { ...base_headers, ...headers };
       }
-
-      console.log(base_headers);
 
       let url: string = `${this.api_endpoint}/${path}`;
       try {
@@ -138,26 +142,35 @@ export class ApiClient {
           .send(data);
 
         attempted = true;
+        break;
       } catch (err) {
+        // console.log(err);
+        if (err instanceof SyntaxError) {
+          response = err["rawResponse"];
+          break; // Handles responses that do not return JSON format
+        }
+
         if (this.expiredToken(err.response)) {
           this.refreshToken();
+          continue;
         }
 
         if (retry && err.status == 429) {
-          let responseBody: { [key: string]: any } = JSON.parse(
-            err.response["text"]
-          );
-          let wait_time: number = Math.ceil(responseBody["waitTime"] / 1000);
+          let responseBody: { [key: string]: any };
+          responseBody = JSON.parse(err.response["text"]);
+          let wait_time: number = Math.ceil(responseBody["waitTime"]);
 
-          if (wait_time <= this.max_wait_time) {
+          if (wait_time <= this.max_wait_time * 1000) {
             //sleep
+            await this.delay(wait_time);
+            continue;
           } else {
             break;
           }
         }
 
         let err_msg: string = this.getErrorMessage(err.status, err.response);
-        console.log(err.response.error);
+        // console.log(err.response.error);
         throw new Error(err_msg);
       }
     }

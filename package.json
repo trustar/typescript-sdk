@@ -1,7 +1,7 @@
 {
   "name": "typescript-sdk",
   "scripts": {
-    "test": "mocha -r ts-node/register test/**/*.test.ts",
+    "test": "mocha -r ts-node/register tests/**/*.test.ts",
     "coverage": "nyc -r lcov -e .ts -x \"*.test.ts\" yarn run test",
     "clean": "rm ./**/*.js ./**/*.js.map"
   },
