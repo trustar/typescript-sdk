@@ -7,11 +7,12 @@ const chaiAsPromised = require("chai-as-promised");
 const expect = chai.expect;
 chai.use(chaiAsPromised);
 
-describe("Authentication", function () {
+describe("Token", function () {
   const AUTH_ENDPOINT: string = "https://api.trustar.co/oauth/token";
   const API_KEY: string = "TEST_API_KEY";
   const API_SECRET: string = "TEST_API_SECRET";
   const TOKEN: string = "1234567890";
+  const PING_REPONSE: object = { text: "pong" };
 
   beforeEach(function () {
     this.apiClient = new ApiClient({
@@ -30,7 +31,7 @@ describe("Authentication", function () {
     this.api = nock("https://api.trustar.co");
   });
 
-  describe("Authentication happy path", function () {
+  describe("Token happy path", function () {
     beforeEach(function () {
       this.api
         .post("/oauth/token")
@@ -59,12 +60,12 @@ describe("Authentication", function () {
     });
 
     it("should be able to retrieve basic GET http request", async function () {
-      this.api.get("/api/1.3/ping").reply(200, { body: "pong" });
+      this.api.get("/api/1.3/ping").reply(200, PING_REPONSE);
       let response = await this.apiClient.get("ping");
-      expect(response.body.body).to.equal("pong");
+      expect(response.body.text).to.equal("pong");
     });
 
-    it("should fail first attempt due to expired token", async function () {
+    it("should fail first request due to expired token", async function () {
       let errorResponse = {
         error_description: "Expired oauth2 access token",
       };
@@ -78,36 +79,35 @@ describe("Authentication", function () {
         .reply(200, {
           access_token: TOKEN,
         });
-      this.api.get("/api/1.3/ping").reply(200, { body: "pong" });
+      this.api.get("/api/1.3/ping").reply(200, PING_REPONSE);
       let response = await this.apiClient.get("ping");
-      expect(response.body.body).to.equal("pong");
+      expect(response.body.text).to.equal("pong");
     });
 
-    it("should throw an error due to failed request", async function () {
+    it("should retrieve token succesfully and fail request to API", async function () {
       this.api.get("/api/1.3/ping").reply(function (url, body, cb) {
         cb(null, [401, { text: "body" }, { "trace-id": "TEST-trace-id" }]);
       });
 
-      // let response = await this.apiClient.get("ping");
       await expect(this.apiClient.get("ping")).to.be.rejectedWith(
         "401 Client Error (Trade-Id: TEST-trace-id)"
       );
     });
 
-    it("should return a waiting time", async function () {
+    it("should sleep 1 ms after receiving 429 (Too Many Requests)", async function () {
       let errorResponse = {
         waitTime: 1,
       };
       this.api.get("/api/1.3/ping").reply(function (url, body, cb) {
         cb(null, [429, errorResponse]);
       });
-      this.api.get("/api/1.3/ping").reply(200, { body: "pong" });
+      this.api.get("/api/1.3/ping").reply(200, PING_REPONSE);
       let response = await this.apiClient.get("ping");
-      expect(response.body.body).to.equal("pong");
+      expect(response.body.text).to.equal("pong");
     });
   });
 
-  describe("Authentication failing path", function () {
+  describe("Token failing path", function () {
     beforeEach(function () {
       this.api
         .post("/oauth/token")

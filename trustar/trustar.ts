@@ -19,7 +19,7 @@ export interface TrustarConfig {
 /**
  * SDK main class to interact with TruSTAR API.
  */
-class TruStar {
+export class TruStar {
   config: TrustarConfig;
   apiClient: ApiClient;
 
@@ -117,27 +117,16 @@ class TruStar {
     return versionJson["sdk_version"];
   }
 
-  async request() {
-    var res = await this.apiClient.get("ping");
-    return res;
-  }
-
   async ping() {
     return await this.apiClient.get("ping");
   }
 
+  // WILL DELETE THIS
   async print() {
-    var res = await this.request();
+    let res = await this.apiClient.get("ping");
     console.log(res);
   }
 }
 
-// let myConfig = {
-//   user_api_key: "asdbaskjbdfajsdfa",
-//   user_api_secret: "andaisndoasdsa",
-// };
-
-var ts = new TruStar();
-// var pong = ts.ping();
-// console.log(pong);
-ts.print();
+// let ts = new TruStar();
+// ts.print();
