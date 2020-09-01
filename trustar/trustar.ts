@@ -83,10 +83,15 @@ export class TruStar {
     });
 
     this.config["client_version"] = this.readVersionFile();
-
     this.apiClient = new ApiClient(this.config);
 
-    console.log(this.config);
+    // managers that will handle requests and logic to
+    // reports, indicators, etc. endpoints
+
+    // this.reportManager = new ReportManager(this.apiClient)
+    // this.indicatorManager = new ReportManager(this.apiClient)
+    // this.tagManager = new TagManager(this.apiClient)
+    // this.phishingManager = new PhishingManager(this.apiClient)
   }
 
   /**

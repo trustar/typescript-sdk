@@ -73,7 +73,7 @@ export class ApiClient {
 
   /**
    * Create headers dictionary for a request.
-   * @param is_json Whether the request body is a json.
+   * @param is_json Whether the request body is in json format.
    *
    * @returns The headers object.
    */
@@ -101,7 +101,11 @@ export class ApiClient {
     return headers;
   }
 
-  delay(ms: number) {
+  /**
+   * Sleeps for some milliseconds when 429s received.
+   * @param ms milliseconds to sleep.
+   */
+  delayNextRequest(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
@@ -126,16 +130,15 @@ export class ApiClient {
     let attempted: boolean = false;
     let response: request.Response;
     while (!attempted || !retry) {
-      let base_headers: object = await this.getHeaders(
-        ["POST", "PUT"].includes(method)
-      );
+      let is_json: boolean = ["POST", "PUT"].includes(method);
+      let base_headers: object = await this.getHeaders(is_json);
       if (headers) {
         base_headers = { ...base_headers, ...headers };
       }
 
       let url: string = `${this.api_endpoint}/${path}`;
+      let request_params: object = params || {};
       try {
-        let request_params: object = params || {};
         response = await request(method, url)
           .set(base_headers)
           .query(request_params)
@@ -161,11 +164,8 @@ export class ApiClient {
           let wait_time: number = Math.ceil(responseBody["waitTime"]);
 
           if (wait_time <= this.max_wait_time * 1000) {
-            //sleep
-            await this.delay(wait_time);
+            await this.delayNextRequest(wait_time);
             continue;
-          } else {
-            break;
           }
         }
 
@@ -194,9 +194,10 @@ export class ApiClient {
   }
 
   /**
-   *
-   * @param status
-   * @param response
+   * Forms a custom error message with status code, trace id and
+   * Client/Server side.
+   * @param status HTTP Status code
+   * @param response HTTP Response
    */
   getErrorMessage(status: number, response: request.Response): string {
     let trace_id: string = response.header["trace-id"]!;
@@ -206,20 +207,24 @@ export class ApiClient {
   }
 
   /**
-   *
-   * @param path
-   * @param params
+   * Method for GET requests. They will be fowarded to the request method
+   * with headers, params, and data.
+   * @param path Endpoint path.
+   * @param headers Headers to be added to the HTTP request.
+   * @param params Params to be added to the HTTP request.
+   * @param data Body data to be added to the HTTP request.
    */
-  async get(path: string, params?: object) {
-    return await this.request("GET", path, undefined, params, undefined); // This may change
+  async get(path: string, headers?: object, params?: object, data?: object) {
+    return await this.request("GET", path, headers, params, data); // This may change
   }
 
   /**
-   *
-   * @param path
-   * @param headers
-   * @param params
-   * @param data
+   * Method for POST requests. They will be fowarded to the request method
+   * with headers, params, and data.
+   * @param path Endpoint path.
+   * @param headers Headers to be added to the HTTP request.
+   * @param params Params to be added to the HTTP request.
+   * @param data Body data to be added to the HTTP request.
    */
   async post(path: string, headers?: object, params?: object, data?: object) {
     return await this.request("POST", path, headers, params, data);
