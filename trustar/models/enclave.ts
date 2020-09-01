@@ -1,6 +1,12 @@
 import { BaseModel } from "./base"
 
 
+export interface EnclaveJSON {
+    id: string;
+    name?: string;
+    type?: string;
+}
+
 /**
  * Enclave
  */
@@ -24,6 +30,11 @@ export class Enclave extends BaseModel {
         this.name = name;
         this.type = type;
     }
+
+    static fromJSON<EnclaveJSON>(json: EnclaveJSON): Enclave {
+        let enclave = (<any>Object).prototype(Enclave);
+        return (<any>Object).assign(enclave, json);
+    }
 }
 
 
@@ -32,7 +43,6 @@ export class Enclave extends BaseModel {
  */
 export class EnclavePermissions extends Enclave {
 
-    id: string;
     name?: string;
     type?: string;
     read?: boolean;

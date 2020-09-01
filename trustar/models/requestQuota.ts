@@ -1,5 +1,18 @@
 import { BaseModel } from "./base"
 
+
+export interface RequestQuotaJSON {
+    guid: string;
+    maxRequests: number;
+    usedRequests: number;
+    timeWindow: number;
+    lastResetTime: number;
+    nextResetTime: number;
+}
+
+/**
+ * Request quota
+ */
 export class RequestQuota extends BaseModel {
 
     guid: string;
@@ -32,4 +45,9 @@ export class RequestQuota extends BaseModel {
                 this.nextResetTime = nextResetTime;
 
             }
+
+    static fromJSON<RequestQuotaJSON>(json: RequestQuotaJSON): RequestQuota {
+        let quota = (<any>Object).prototype(RequestQuota);
+        return (<any>Object).assign(quota, json);
+    }
 }

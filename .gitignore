@@ -142,7 +142,10 @@ dist
 .DS_Store
 
 # Ignore compiled JS files
-*.js
+*.js*
 
 # TruSTAR config file
 trustar.config.json
+
+# Editor Config
+.editorconfig

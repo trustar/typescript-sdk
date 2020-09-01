@@ -1,7 +1,27 @@
 import { BaseModel } from "./base"
 import { IndicatorType } from "./enum"
-import { Tag } from "./tag"
+import { Tag, TagJSON } from "./tag"
 
+
+/**
+ * IndicatorJSON helper interface to convert Indicator to and from JSON.
+ */
+export interface IndicatorJSON {
+    value: string;
+    type?: string;
+    priorityLevel?: string;
+    correlationCount?: number;
+    whiteListed?: boolean;
+    weight?: number;
+    reason?: string;
+    firstSeen?: number;
+    lastSeen?: number;
+    sightings?: number;
+    source?: string;
+    notes?: string;
+    tags?: object;
+    enclaveIds?: object;
+}
 
 /**
  * Class definition for an Indicator
@@ -67,5 +87,16 @@ export class Indicator extends BaseModel {
             this.tags = tags;
             this.enclaveIds = enclaveIds;
         }
+
+    static decodeTags(tagArray: Array<TagJSON>) {
+        return tagArray.forEach(tag => new Tag(tag));
+    }
+
+    static fromJSON<T extends IndicatorJSON>(json: T): Indicator {
+        let indicator = (<any>Object).prototype(Indicator)
+        return (<any>Object).assign(indicator, json, {
+            tags: this.decodeTags((json.tags as Array<TagJSON>))
+        })
+    }
 }
 

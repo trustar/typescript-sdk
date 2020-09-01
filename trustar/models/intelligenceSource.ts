@@ -1,6 +1,11 @@
 import { BaseModel } from "./base"
 
 
+export interface IntelligenceSourceJSON {
+    key?: string;
+    name?: string;
+}
+
 /**
  * Intelligence source
  */
@@ -20,5 +25,10 @@ export class IntelligenceSource extends BaseModel {
         super();
         this.key = key;
         this.name = name;
+    }
+
+    static fromJSON<IntelligenceSourceJSON>(json: IntelligenceSourceJSON): IntelligenceSource {
+        let source = (<any>Object).prototype(IntelligenceSource);
+        return (<any>Object).assign(source, json);
     }
 }

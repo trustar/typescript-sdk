@@ -2,6 +2,19 @@ import { BaseModel } from "./base";
 import { IdType, DistributionType } from "./enum";
 
 
+export interface ReportJSON {
+    id?: string;
+    title?: string;
+    body?: string;
+    timeBegan?: string | number;
+    externalId?: string;
+    externalUrl?: string;
+    isEnclave?: boolean;
+    enclaveIds?: object | string;
+    created?: number;
+    updated?: number;
+}
+
 /**
  * Report
  */
@@ -25,7 +38,8 @@ export class Report extends BaseModel {
      * @param [id] The unique ID of the report.
      * @param [title] The report title.
      * @param [body] The report body.
-     * @param [timeBegan] The time that the incident described in the report began.
+     * @param [timeBegan] The time that the incident described in the report began. Should be either in milliseconds or
+     *                    an ISO format Date object.
      * @param [externalId] An ID created by the external system from which the report was sourced.
      * @param [externalUrl] A URL link to the report in an external system.
      * @param [isEnclave] A boolean indicating whether the distribubtion type of a report is ENCLAVE or COMMUNITY
@@ -50,24 +64,48 @@ export class Report extends BaseModel {
         this.id = id;
         this.title = title;
         this.body = body;
-        this.timeBegan = timeBegan;
         this.externalId = externalId;
         this.externalUrl = externalUrl;
         this.isEnclave = isEnclave;
         this.created = created;
         this.updated = updated;
 
+        this.timeBegan = Report.setTimeBegan(timeBegan);
+
     }
 
+    /**
+     * Sets time began
+     * @param timeBegan A timestamp in ISO date format or milliseconds.
+     * @returns A timestamp in milliseconds.
+     */
+    static setTimeBegan(timeBegan: Date | number | string | undefined) {
+        if (typeof timeBegan === 'string') {
+            timeBegan = new Date(timeBegan);
+        }
+
+        if (timeBegan instanceof Date) {
+            return timeBegan.getTime();
+        }
+        return timeBegan;
+    }
 
     /**
      * Gets distribution type
      * @returns  A string indicating whether the report belongs to an enclave or not.
      */
-    private _getDistributionType() {
+    private getDistributionType() {
         if (this.isEnclave === true) {
             return DistributionType.ENCLAVE;
         }
         return DistributionType.COMMUNITY;
+    }
+
+    static fromJSON<T extends ReportJSON>(json: T): Report {
+        let report = (<any>Object).prototype(Report);
+
+        return (<any>Object).assign(report, json, {
+            timeBegan: this.setTimeBegan(json.timeBegan),
+        })
     }
 }

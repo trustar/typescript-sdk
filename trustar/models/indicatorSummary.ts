@@ -1,5 +1,20 @@
 import { BaseModel } from "./base"
-import { IntelligenceSource } from "./intelligenceSource"
+import { IntelligenceSource, IntelligenceSourceJSON } from "./intelligenceSource"
+
+
+export interface IndicatorSummaryJSON {
+    value?: string;
+    indicatorType?: string;
+    reportId?: string;
+    enclaveId?: string;
+    source?: object;
+    score?: object;
+    created?: number;
+    updated?: number;
+    description?: string;
+    attributes?: object;
+    severityLevel?: number;
+}
 
 export class IndicatorSummary extends BaseModel {
 
@@ -49,8 +64,26 @@ export class IndicatorSummary extends BaseModel {
         this.attributes = attributes;
         this.severityLevel = severityLevel;
     }
+
+    static decodeAttributes(tagArray: Array<IndicatorAttributeJSON>) {
+        return tagArray.forEach(attribute => new IndicatorAttribute(attribute));
+    }
+
+    static fromJSON<T extends IndicatorSummaryJSON>(json: T): IndicatorSummary {
+        let summary = (<any>Object).prototype(IndicatorSummary);
+        return (<any>Object).assign(summary, json, {
+            source: new IntelligenceSource(json.source),
+            score: new IndicatorScore(json.score),
+            attributes: this.decodeAttributes((json.attributes as Array<IndicatorAttributeJSON>))
+        })
+    }
 }
 
+
+interface IndicatorScoreJSON {
+    name?: string;
+    value?: string;
+}
 
 /**
  * Indicator score
@@ -71,8 +104,20 @@ class IndicatorScore extends BaseModel {
         this.name = name;
         this.value = value;
     }
+
+    static fromJSON<IndicatorScoreJSON>(json: IndicatorScoreJSON) {
+        let score = (<any>Object).prototype(IndicatorScore);
+        return (<any>Object).assign(score, json);
+    }
 }
 
+
+interface IndicatorAttributeJSON {
+    name?: string;
+    value?: string;
+    logicalType?: string;
+    description?: string;
+}
 
 /**
  * IndicatorAttribute
@@ -102,4 +147,9 @@ class IndicatorAttribute extends BaseModel {
             this.description = description;
 
         }
+
+    static fromJSON<IndicatorAttributeJSON>(json: IndicatorAttributeJSON) {
+        let attribute = (<any>Object).prototype(IndicatorAttribute);
+        return (<any>Object).assign(attribute, json);
+    }
 }

@@ -29,9 +29,10 @@ export class NumberedPage<T> {
                 return this.hasNext
             }
             let totalPages = this.getTotalPages();
-            if (this.pageSize == undefined || totalPages == undefined) {
+            if (this.pageNumber == undefined || this.pageSize == undefined || totalPages == undefined) {
                 return
             }
+
             return this.pageNumber + 1 < totalPages
         }
 }

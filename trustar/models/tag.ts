@@ -1,5 +1,11 @@
 import { BaseModel } from "./base"
 
+export interface TagJSON {
+    name: string;
+    id?: string;
+    enclaveId?: string;
+}
+
 /**
  * Tag
  */
@@ -21,5 +27,10 @@ export class Tag extends BaseModel {
         this.name = name;
         this.id = id;
         this.enclaveId = enclaveId;
+    }
+
+    static fromJSON<TagJSON>(json: TagJSON): Tag {
+        let tag = (<any>Object).prototype(Tag);
+        return (<any>Object).assign(tag, json);
     }
 }
