@@ -129,7 +129,7 @@ export class ApiClient {
     let retry: boolean = this.retry;
     let attempted: boolean = false;
     let response: request.Response;
-    while (!attempted || !retry) {
+    while (!attempted || retry) {
       let is_json: boolean = ["POST", "PUT"].includes(method);
       let base_headers: object = await this.getHeaders(is_json);
       if (headers) {
