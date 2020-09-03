@@ -3,15 +3,15 @@ import { ApiClient } from "./api_client";
 const fs = require("fs");
 
 export interface TrustarConfig {
-  auth_endpoint?: string;
-  api_endpoint?: string;
-  user_api_key: string;
-  user_api_secret: string;
+  authEndpoint?: string;
+  apiEndpoint?: string;
+  userApiKey: string;
+  userApiSecret: string;
   verify?: boolean;
   retry?: boolean;
-  max_wait_time?: number;
-  client_type?: string;
-  client_version?: string;
+  maxWaitTime?: number;
+  clientType?: string;
+  clientVersion?: string;
 
   [index: string]: any;
 }
@@ -23,18 +23,18 @@ export class TruStar {
   config: TrustarConfig;
   apiClient: ApiClient;
 
-  readonly REQUIRED_FIELDS = ["user_api_key", "user_api_secret"];
+  readonly REQUIRED_FIELDS = ["userApiKey", "userApiSecret"];
 
   readonly DEFAULT_FIELDS: { [key: string]: any } = {
-    auth_endpoint: "https://api.trustar.co/oauth/token",
-    api_endpoint: "https://api.trustar.co/api/1.3",
-    client_type: "JS_SDK",
-    client_metatag: null, // change?
+    authEndpoint: "https://api.trustar.co/oauth/token",
+    apiEndpoint: "https://api.trustar.co/api/1.3",
+    clientType: "JS_SDK",
+    clientMetatag: null, // change?
     verify: true,
     retry: true,
-    max_wait_time: 60,
-    http_proxy: null,
-    https_proxy: null,
+    maxWaitTime: 60,
+    httpProxy: null,
+    httpsProxy: null,
   };
 
   /**
@@ -95,7 +95,7 @@ export class TruStar {
   }
 
   /**
-   * Reads a JSON file and return a JS object.
+   * Reads a JSON file and returns a JS object.
    * @param path path including filename to json file
    */
   readAndGetJSON(path: string): { [key: string]: any } {
@@ -119,7 +119,7 @@ export class TruStar {
     let versionJson: { [key: string]: string } = this.readAndGetJSON(
       "version.json"
     );
-    return versionJson["sdk_version"];
+    return versionJson["sdkVersion"];
   }
 
   async ping() {

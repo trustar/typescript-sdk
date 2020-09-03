@@ -16,16 +16,16 @@ describe("Token", function () {
 
   beforeEach(function () {
     this.apiClient = new ApiClient({
-      user_api_key: API_KEY,
-      user_api_secret: API_SECRET,
-      api_endpoint: "https://api.trustar.co/api/1.3",
-      auth_endpoint: AUTH_ENDPOINT,
-      client_type: "JS_SDK",
-      client_metatag: "TEST_METATAG",
-      client_version: "TEST_VERSION",
+      userApiKey: API_KEY,
+      userApiSecret: API_SECRET,
+      apiEndpoint: "https://api.trustar.co/api/1.3",
+      authEndpoint: AUTH_ENDPOINT,
+      clientType: "JS_SDK",
+      clientMetatag: "TEST_METATAG",
+      clientVersion: "TEST_VERSION",
       verify: true,
       retry: true,
-      max_wait_time: 60,
+      maxWaitTime: 60,
     });
 
     this.api = nock("https://api.trustar.co");

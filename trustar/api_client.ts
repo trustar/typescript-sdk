@@ -10,16 +10,16 @@ export class ApiClient {
     "Expired oauth2 access token",
     "Invalid oauth2 access token",
   ];
-  auth_endpoint: string;
-  api_endpoint: string;
-  user_api_key: string;
-  user_api_secret: string;
-  client_type: string;
+  authEndpoint: string;
+  apiEndpoint: string;
+  userApiKey: string;
+  userApiSecret: string;
+  clientType: string;
   verify: boolean;
   retry: boolean;
-  max_wait_time: number;
-  client_metatag: string;
-  client_version: string;
+  maxWaitTime: number;
+  clientMetatag: string;
+  clientVersion: string;
   token: string | null;
 
   /**
@@ -30,16 +30,16 @@ export class ApiClient {
    * or auth_endpoint to interact with TruSTAR API.
    */
   constructor(config: TrustarConfig) {
-    this.auth_endpoint = config["auth_endpoint"]!;
-    this.api_endpoint = config["api_endpoint"]!;
-    this.user_api_key = config["user_api_key"];
-    this.user_api_secret = config["user_api_secret"];
-    this.client_type = config["client_type"]!;
-    this.verify = config["verify"]!;
-    this.retry = config["retry"]!;
-    this.max_wait_time = config["max_wait_time"]!;
-    this.client_metatag = config["client_metatag"];
-    this.client_version = config["client_version"]!;
+    this.authEndpoint = config.authEndpoint!;
+    this.apiEndpoint = config.apiEndpoint!;
+    this.userApiKey = config.userApiKey;
+    this.userApiSecret = config.userApiSecret;
+    this.clientType = config.clientType!;
+    this.verify = config.verify!;
+    this.retry = config.retry!;
+    this.maxWaitTime = config.maxWaitTime!;
+    this.clientMetatag = config.clientMetatag;
+    this.clientVersion = config.clientVersion!;
     this.token = null;
   }
 
@@ -51,9 +51,9 @@ export class ApiClient {
   async refreshToken() {
     try {
       const res = await request
-        .post(this.auth_endpoint)
+        .post(this.authEndpoint)
         .query(this.AUTH_PARAMS)
-        .auth(this.user_api_key, this.user_api_secret);
+        .auth(this.userApiKey, this.userApiSecret);
 
       this.token = res.body["access_token"];
     } catch (err) {
@@ -77,24 +77,24 @@ export class ApiClient {
    *
    * @returns The headers object.
    */
-  async getHeaders(is_json: boolean = false): Promise<object> {
+  async getHeaders(isJson: boolean = false): Promise<object> {
     let token: string = await this.getToken();
     let headers: { [key: string]: any } = {
       Authorization: `Bearer ${token}`,
     };
-    if (this.client_type) {
-      headers["Client-Type"] = this.client_type;
+    if (this.clientType) {
+      headers["Client-Type"] = this.clientType;
     }
 
-    if (this.client_metatag) {
-      headers["Client-Metatag"] = this.client_metatag;
+    if (this.clientMetatag) {
+      headers["Client-Metatag"] = this.clientMetatag;
     }
 
-    if (this.client_version) {
-      headers["Client-Version"] = this.client_version;
+    if (this.clientVersion) {
+      headers["Client-Version"] = this.clientVersion;
     }
 
-    if (is_json) {
+    if (isJson) {
       headers["Content-Type"] = "application/json";
     }
 
@@ -130,24 +130,23 @@ export class ApiClient {
     let attempted: boolean = false;
     let response: request.Response;
     while (!attempted || retry) {
-      let is_json: boolean = ["POST", "PUT"].includes(method);
-      let base_headers: object = await this.getHeaders(is_json);
+      let isJson: boolean = ["POST", "PUT"].includes(method);
+      let baseHeaders: object = await this.getHeaders(isJson);
       if (headers) {
-        base_headers = { ...base_headers, ...headers };
+        baseHeaders = { ...baseHeaders, ...headers };
       }
 
-      let url: string = `${this.api_endpoint}/${path}`;
+      let url: string = `${this.apiEndpoint}/${path}`;
       let request_params: object = params || {};
       try {
         response = await request(method, url)
-          .set(base_headers)
+          .set(baseHeaders)
           .query(request_params)
           .send(data);
 
         attempted = true;
         break;
       } catch (err) {
-        // console.log(err);
         if (err instanceof SyntaxError) {
           response = err["rawResponse"];
           break; // Handles responses that do not return JSON format
@@ -160,10 +159,10 @@ export class ApiClient {
 
         if (retry && err.status == 429) {
           let responseBody: { [key: string]: any };
-          responseBody = JSON.parse(err.response["text"]);
-          let wait_time: number = Math.ceil(responseBody["waitTime"]);
+          responseBody = JSON.parse(err.response.text);
+          let wait_time: number = Math.ceil(responseBody.waitTime);
 
-          if (wait_time <= this.max_wait_time * 1000) {
+          if (wait_time <= this.maxWaitTime * 1000) {
             await this.delayNextRequest(wait_time);
             continue;
           }
