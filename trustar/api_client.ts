@@ -12,6 +12,7 @@ export class ApiClient {
   ];
   authEndpoint: string;
   apiEndpoint: string;
+  stationBaseUrl: string;
   userApiKey: string;
   userApiSecret: string;
   clientType: string;
@@ -32,6 +33,7 @@ export class ApiClient {
   constructor(config: TrustarConfig) {
     this.authEndpoint = config.authEndpoint!;
     this.apiEndpoint = config.apiEndpoint!;
+    this.stationBaseUrl = config.stationBaseUrl!;
     this.userApiKey = config.userApiKey;
     this.userApiSecret = config.userApiSecret;
     this.clientType = config.clientType!;
@@ -110,6 +112,14 @@ export class ApiClient {
   }
 
   /**
+   * Checks if an object is empty or not
+   * @param obj object to check
+   */
+  isEmpty(obj: object): boolean {
+    return Object.keys(obj).length === 0;
+  }
+
+  /**
    * Generic request method that handles logic to interact with different
    * TruSTAR's endpoints.
    * @param method The method of the request: GET, PUT, POST or DELETE.
@@ -123,7 +133,7 @@ export class ApiClient {
     method: string,
     path: string,
     headers?: object,
-    params?: object,
+    params: object = {},
     data?: object
   ): Promise<request.Response> {
     let retry: boolean = this.retry;
@@ -132,16 +142,15 @@ export class ApiClient {
     while (!attempted || retry) {
       let isJson: boolean = ["POST", "PUT"].includes(method);
       let baseHeaders: object = await this.getHeaders(isJson);
-      if (headers) {
+      if (headers && this.isEmpty(headers)) {
         baseHeaders = { ...baseHeaders, ...headers };
       }
 
       let url: string = `${this.apiEndpoint}/${path}`;
-      let request_params: object = params || {};
       try {
         response = await request(method, url)
           .set(baseHeaders)
-          .query(request_params)
+          .query(params)
           .send(data);
 
         attempted = true;
@@ -160,10 +169,10 @@ export class ApiClient {
         if (retry && err.status == 429) {
           let responseBody: { [key: string]: any };
           responseBody = JSON.parse(err.response.text);
-          let wait_time: number = Math.ceil(responseBody.waitTime);
+          let waitTime: number = Math.ceil(responseBody.waitTime);
 
-          if (wait_time <= this.maxWaitTime * 1000) {
-            await this.delayNextRequest(wait_time);
+          if (waitTime <= this.maxWaitTime * 1000) {
+            await this.delayNextRequest(waitTime);
             continue;
           }
         }
@@ -213,8 +222,13 @@ export class ApiClient {
    * @param params Params to be added to the HTTP request.
    * @param data Body data to be added to the HTTP request.
    */
-  async get(path: string, headers?: object, params?: object, data?: object) {
-    return await this.request("GET", path, headers, params, data); // This may change
+  async get(
+    path: string,
+    headers?: object,
+    params: object = {},
+    data?: object
+  ) {
+    return await this.request("GET", path, headers, params, data);
   }
 
   /**
@@ -225,7 +239,12 @@ export class ApiClient {
    * @param params Params to be added to the HTTP request.
    * @param data Body data to be added to the HTTP request.
    */
-  async post(path: string, headers?: object, params?: object, data?: object) {
+  async post(
+    path: string,
+    headers?: object,
+    params: object = {},
+    data?: object
+  ) {
     return await this.request("POST", path, headers, params, data);
   }
 }

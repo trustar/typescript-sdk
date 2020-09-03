@@ -7,11 +7,11 @@ export interface TrustarConfig {
   apiEndpoint?: string;
   userApiKey: string;
   userApiSecret: string;
-  verify?: boolean;
   retry?: boolean;
   maxWaitTime?: number;
   clientType?: string;
   clientVersion?: string;
+  stationBaseUrl?: string;
 
   [index: string]: any;
 }
@@ -28,13 +28,11 @@ export class TruStar {
   readonly DEFAULT_FIELDS: { [key: string]: any } = {
     authEndpoint: "https://api.trustar.co/oauth/token",
     apiEndpoint: "https://api.trustar.co/api/1.3",
+    stationBaseUrl: "https://station.trustar.co",
     clientType: "JS_SDK",
-    clientMetatag: null, // change?
-    verify: true,
+    clientMetatag: null,
     retry: true,
     maxWaitTime: 60,
-    httpProxy: null,
-    httpsProxy: null,
   };
 
   /**
