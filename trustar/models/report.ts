@@ -27,7 +27,7 @@ export class Report extends BaseModel {
     externalId?: string;
     externalUrl?: string;
     isEnclave?: boolean = true;
-    enclaveIds?: string[] | string;
+    enclaveIds?: string[];
     created?: number;
     updated?: number;
 
@@ -105,6 +105,6 @@ export class Report extends BaseModel {
 
     static fromJSON(json: string): Report {
       const reportJSON = JSON.parse(json);
-      return new Report({...reportJSON});
+      return new Report(reportJSON);
     }
 }

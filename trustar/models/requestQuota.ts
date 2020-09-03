@@ -32,22 +32,20 @@ export class RequestQuota extends BaseModel {
      * @param lastResetTime The time that the counter was last reset, in milliseconds since epoch.
      * @param nextResetTime The time that the counter will next be reset, in milliseconds since epoch.
      */
-    constructor({guid, maxRequests, usedRequests, timeWindow, lastResetTime, nextResetTime}:
-            {guid: string, maxRequests: number, usedRequests: number, timeWindow: number, 
-            lastResetTime: number, nextResetTime: number}) {
+    constructor(requestQuota: RequestQuotaJSON) {
 
                 super();
-                this.guid = guid;
-                this.maxRequests = maxRequests;
-                this.usedRequests = usedRequests;
-                this.timeWindow = timeWindow;
-                this.lastResetTime = lastResetTime;
-                this.nextResetTime = nextResetTime;
+                this.guid = requestQuota.guid;
+                this.maxRequests = requestQuota.maxRequests;
+                this.usedRequests = requestQuota.usedRequests;
+                this.timeWindow = requestQuota.timeWindow;
+                this.lastResetTime = requestQuota.lastResetTime;
+                this.nextResetTime = requestQuota.nextResetTime;
 
             }
 
-    static fromJSON<RequestQuotaJSON>(json: RequestQuotaJSON): RequestQuota {
-        let quota = Object.create(RequestQuota.prototype);
-        return Object.assign(quota, json);
+    static fromJSON(json: string): RequestQuota {
+        const quotaJSON = JSON.parse(json);
+        return new RequestQuota(quotaJSON);
     }
 }

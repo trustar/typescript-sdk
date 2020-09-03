@@ -31,6 +31,6 @@ export class Tag extends BaseModel {
 
     static fromJSON(json: string): Tag {
         const tagJSON = JSON.parse(json);
-        return new Tag({...tagJSON});
+        return new Tag(tagJSON);
     }
 }

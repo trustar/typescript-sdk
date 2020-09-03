@@ -20,15 +20,15 @@ export class IntelligenceSource extends BaseModel {
      * @param [key] A string that identifies the source. i.e. "virustotal"
      * @param [name] The human-readable name of the source. i.e. "VirusTotal"
      */
-    constructor({key, name}: {key?: string, name?: string} = {}) {
+    constructor(intelligenceSource: IntelligenceSourceJSON) {
 
         super();
-        this.key = key;
-        this.name = name;
+        this.key = intelligenceSource.key;
+        this.name = intelligenceSource.name;
     }
 
-    static fromJSON<IntelligenceSourceJSON>(json: IntelligenceSourceJSON): IntelligenceSource {
-        let source = Object.create(IntelligenceSource.prototype);
-        return Object.assign(source, json);
+    static fromJSON(json: string): IntelligenceSource {
+        const intelSourceJSON = JSON.parse(json);
+        return new IntelligenceSource(intelSourceJSON);
     }
 }

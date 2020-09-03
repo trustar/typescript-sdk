@@ -12,7 +12,7 @@ export interface IndicatorSummaryJSON {
     created?: number;
     updated?: number;
     description?: string;
-    attributes?: object;
+    attributes?: object[];
     severityLevel?: number;
 }
 
@@ -27,7 +27,7 @@ export class IndicatorSummary extends BaseModel {
     created?: number;
     updated?: number;
     description?: string;
-    attributes?: Array<IndicatorAttribute>;
+    attributes?: IndicatorAttribute[];
     severityLevel?: number = 0 | 1 | 2 | 3;
 
 
@@ -46,39 +46,32 @@ export class IndicatorSummary extends BaseModel {
      * @param [severityLevel] A normalized representation of the score from this source if one exists.
      *                     This is an integer between and 0 and 3; 0 being the lowest score.
      */
-    constructor({value, indicatorType, reportId, enclaveId, source, score, created, updated, description,
-        attributes, severityLevel}: {value?: string, indicatorType?: string, reportId?: string, enclaveId?: string,
-        source?: IntelligenceSource, score?: IndicatorScore, created?: number, updated?: number,
-        description?: string, attributes?: Array<IndicatorAttribute>, severityLevel?: number} = {}) {
+    constructor(indicatorSummary: IndicatorSummaryJSON) {
  
         super();
-        this.value = value;
-        this.indicatorType = indicatorType;
-        this.reportId = reportId;
-        this.enclaveId = enclaveId;
-        this.source = source;
-        this.score = score;
-        this.created = created;
-        this.updated = updated;
-        this.description = description;
-        this.attributes = attributes;
-        this.severityLevel = severityLevel;
+
+        this.value = indicatorSummary.value;
+        this.indicatorType = indicatorSummary.indicatorType;
+        this.reportId = indicatorSummary.reportId;
+        this.enclaveId = indicatorSummary.enclaveId;
+        this.source = indicatorSummary.source ? new IntelligenceSource(indicatorSummary.source) : undefined;
+        this.score = indicatorSummary.score ? new IndicatorScore(indicatorSummary.score) : undefined;
+        this.created = indicatorSummary.created;
+        this.updated = indicatorSummary.updated;
+        this.description = indicatorSummary.description;
+        this.attributes = indicatorSummary.attributes ? IndicatorSummary.decodeAttributes(indicatorSummary.attributes): undefined;
+        this.severityLevel = indicatorSummary.severityLevel;
     }
 
-    static decodeAttributes(tagArray: Array<IndicatorAttributeJSON>) {
-        return tagArray.forEach(attribute => new IndicatorAttribute(attribute));
+    static decodeAttributes(tagArray: IndicatorAttributeJSON[]): IndicatorAttribute[] {
+        return tagArray.map(attribute => new IndicatorAttribute(attribute));
     }
 
-    static fromJSON<T extends IndicatorSummaryJSON>(json: T): IndicatorSummary {
-        let summary = Object.create(IndicatorSummary.prototype);
-        return Object.assign(summary, json, {
-            source: new IntelligenceSource(json.source),
-            score: new IndicatorScore(json.score),
-            attributes: this.decodeAttributes((json.attributes as Array<IndicatorAttributeJSON>))
-        })
+    static fromJSON(json: string): IndicatorSummary {
+        const summaryJSON = JSON.parse(json);
+        return new IndicatorSummary(summaryJSON);
     }
 }
-
 
 interface IndicatorScoreJSON {
     name?: string;
@@ -98,16 +91,16 @@ class IndicatorScore extends BaseModel {
      * @param [name] The name of the score type, e.g. "Risk Score"
      * @param [value] The value of the score, as extracted from the source. 
      */
-    constructor({name, value}: {name?: string, value?: string} = {}) {
+    constructor(indicatorScore: IndicatorScoreJSON) {
         
         super();
-        this.name = name;
-        this.value = value;
+        this.name = indicatorScore.name;
+        this.value = indicatorScore.value;
     }
 
-    static fromJSON<IndicatorScoreJSON>(json: IndicatorScoreJSON) {
-        let score = Object.create(IndicatorScore.prototype);
-        return Object.assign(score, json);
+    static fromJSON(json: string): IndicatorScore {
+        const scoreJSON = JSON.parse(json);
+        return new IndicatorScore(scoreJSON);
     }
 }
 
@@ -137,19 +130,18 @@ class IndicatorAttribute extends BaseModel {
      * @param [logicalType] Describes how to interpret the value field; i.e. could be a timestamp if value is number.
      * @param [description] A description of how to interpret the attribute. Corresponds to an attribute name.
      */
-    constructor({name, value, logicalType, description}: {name?: string, value?: string,
-        logicalType?: string, description?: string} = {}) {
+    constructor(indicatorAttribute: IndicatorAttributeJSON) {
             
             super();
-            this.name = name;
-            this.value = value;
-            this.logicalType = logicalType;
-            this.description = description;
+            this.name = indicatorAttribute.name;
+            this.value = indicatorAttribute.value;
+            this.logicalType = indicatorAttribute.logicalType;
+            this.description = indicatorAttribute.description;
 
         }
 
-    static fromJSON<IndicatorAttributeJSON>(json: IndicatorAttributeJSON) {
-        let attribute = Object.create(IndicatorAttribute.prototype);
-        return Object.assign(attribute, json);
+    static fromJSON(json: string) {
+        const indicatorAttributeJSON = JSON.parse(json);
+        return new IndicatorAttribute(indicatorAttributeJSON);
     }
 }
