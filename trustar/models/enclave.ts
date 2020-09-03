@@ -31,9 +31,9 @@ export class Enclave extends BaseModel {
         this.type = type;
     }
 
-    static fromJSON<EnclaveJSON>(json: EnclaveJSON): Enclave {
-        let enclave = Object.create(Enclave.prototype);
-        return Object.assign(enclave, json);
+    static fromJSON(json: string): Enclave {
+        const enclaveJSON = JSON.parse(json);
+        return new Enclave({...enclaveJSON});
     }
 }
 

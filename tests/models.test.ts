@@ -27,8 +27,11 @@ describe('BaseModel', function() {
 
   describe('Enclave', function() {
     let enclave = Object.create(Enclave.Enclave.prototype);
+
     it('Create Enclave object from JSON string', function() {
-      let enclaveFromJSON = Enclave.Enclave.fromJSON(JSON.parse(enclaveJson));
+      console.log(enclaveJson)
+      let enclaveFromJSON = Enclave.Enclave.fromJSON(enclaveJson);
+      console.log(enclaveFromJSON)
       expect(enclaveFromJSON.id).to.equal(enclaveID);
       expect(enclaveFromJSON.name).to.equal(enclaveName);
       expect(enclaveFromJSON.type).to.equal(enclaveType);
