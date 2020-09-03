@@ -70,8 +70,8 @@ export class IndicatorSummary extends BaseModel {
     }
 
     static fromJSON<T extends IndicatorSummaryJSON>(json: T): IndicatorSummary {
-        let summary = (<any>Object).prototype(IndicatorSummary);
-        return (<any>Object).assign(summary, json, {
+        let summary = Object.create(IndicatorSummary.prototype);
+        return Object.assign(summary, json, {
             source: new IntelligenceSource(json.source),
             score: new IndicatorScore(json.score),
             attributes: this.decodeAttributes((json.attributes as Array<IndicatorAttributeJSON>))
@@ -106,8 +106,8 @@ class IndicatorScore extends BaseModel {
     }
 
     static fromJSON<IndicatorScoreJSON>(json: IndicatorScoreJSON) {
-        let score = (<any>Object).prototype(IndicatorScore);
-        return (<any>Object).assign(score, json);
+        let score = Object.create(IndicatorScore.prototype);
+        return Object.assign(score, json);
     }
 }
 
@@ -149,7 +149,7 @@ class IndicatorAttribute extends BaseModel {
         }
 
     static fromJSON<IndicatorAttributeJSON>(json: IndicatorAttributeJSON) {
-        let attribute = (<any>Object).prototype(IndicatorAttribute);
-        return (<any>Object).assign(attribute, json);
+        let attribute = Object.create(IndicatorAttribute.prototype);
+        return Object.assign(attribute, json);
     }
 }

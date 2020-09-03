@@ -102,9 +102,9 @@ export class Report extends BaseModel {
     }
 
     static fromJSON<T extends ReportJSON>(json: T): Report {
-        let report = (<any>Object).prototype(Report);
+        let report = Object.create(Report.prototype);
 
-        return (<any>Object).assign(report, json, {
+        return Object.assign(report, json, {
             timeBegan: this.setTimeBegan(json.timeBegan),
         })
     }

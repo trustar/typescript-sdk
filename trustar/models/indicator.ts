@@ -93,8 +93,8 @@ export class Indicator extends BaseModel {
     }
 
     static fromJSON<T extends IndicatorJSON>(json: T): Indicator {
-        let indicator = (<any>Object).prototype(Indicator)
-        return (<any>Object).assign(indicator, json, {
+        let indicator = Object.create(Indicator.prototype)
+        return Object.assign(indicator, json, {
             tags: this.decodeTags((json.tags as Array<TagJSON>))
         })
     }

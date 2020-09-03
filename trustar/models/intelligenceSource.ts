@@ -28,7 +28,7 @@ export class IntelligenceSource extends BaseModel {
     }
 
     static fromJSON<IntelligenceSourceJSON>(json: IntelligenceSourceJSON): IntelligenceSource {
-        let source = (<any>Object).prototype(IntelligenceSource);
-        return (<any>Object).assign(source, json);
+        let source = Object.create(IntelligenceSource.prototype);
+        return Object.assign(source, json);
     }
 }

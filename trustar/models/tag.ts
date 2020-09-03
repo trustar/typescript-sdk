@@ -30,7 +30,7 @@ export class Tag extends BaseModel {
     }
 
     static fromJSON<TagJSON>(json: TagJSON): Tag {
-        let tag = (<any>Object).prototype(Tag);
-        return (<any>Object).assign(tag, json);
+        let tag = Object.create(Tag.prototype);
+        return Object.assign(tag, json);
     }
 }

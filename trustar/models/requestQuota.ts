@@ -47,7 +47,7 @@ export class RequestQuota extends BaseModel {
             }
 
     static fromJSON<RequestQuotaJSON>(json: RequestQuotaJSON): RequestQuota {
-        let quota = (<any>Object).prototype(RequestQuota);
-        return (<any>Object).assign(quota, json);
+        let quota = Object.create(RequestQuota.prototype);
+        return Object.assign(quota, json);
     }
 }
