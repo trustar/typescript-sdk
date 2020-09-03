@@ -6,11 +6,11 @@ export interface ReportJSON {
     id?: string;
     title?: string;
     body?: string;
-    timeBegan?: string | number;
+    timeBegan?: Date | string | number;
     externalId?: string;
     externalUrl?: string;
     isEnclave?: boolean;
-    enclaveIds?: object | string;
+    enclaveIds?: string[] | string;
     created?: number;
     updated?: number;
 }
@@ -23,11 +23,11 @@ export class Report extends BaseModel {
     id?: string;
     title?: string;
     body?: string;
-    timeBegan?: Date | number;
+    timeBegan?: Date;
     externalId?: string;
     externalUrl?: string;
     isEnclave?: boolean = true;
-    enclaveIds?: Array<string> | string;
+    enclaveIds?: string[] | string;
     created?: number;
     updated?: number;
 
@@ -48,46 +48,48 @@ export class Report extends BaseModel {
      * @param [updated] The last time the report was updated.
      * 
      */
-    constructor({id, title, body, timeBegan, externalId, externalUrl, isEnclave, enclaveIds, created, updated}: 
-        {id?: string, title?: string, body?: string, timeBegan?: Date | number,
-        externalId?: string, externalUrl?: string, isEnclave?: boolean,
-        enclaveIds?: Array<string> | string, created?: number, updated?: number} = {}) {
+    constructor(report: ReportJSON) {
         
         super();
 
-        if (typeof enclaveIds === 'string') {
-            this.enclaveIds = [enclaveIds];
+        if (typeof report.enclaveIds === 'string') {
+            this.enclaveIds = [report.enclaveIds];
         } else {
-            this.enclaveIds = enclaveIds;
+            this.enclaveIds = report.enclaveIds;
         }
 
-        this.id = id;
-        this.title = title;
-        this.body = body;
-        this.externalId = externalId;
-        this.externalUrl = externalUrl;
-        this.isEnclave = isEnclave;
-        this.created = created;
-        this.updated = updated;
+        this.id = report.id;
+        this.title = report.title;
+        this.body = report.body;
+        this.externalId = report.externalId;
+        this.externalUrl = report.externalUrl;
+        this.isEnclave = report.isEnclave;
+        this.created = report.created;
+        this.updated = report.updated;
 
-        this.timeBegan = Report.setTimeBegan(timeBegan);
+        if (report.timeBegan !== undefined) {
+          this.timeBegan = Report.setTimeBegan(report.timeBegan);
+        } else {
+          this.timeBegan = report.timeBegan;
+        }
 
     }
 
     /**
      * Sets time began
      * @param timeBegan A timestamp in ISO date format or milliseconds.
-     * @returns A timestamp in milliseconds.
+     * @returns A timestamp in ISO date format.
      */
-    static setTimeBegan(timeBegan: Date | number | string | undefined) {
-        if (typeof timeBegan === 'string') {
-            timeBegan = new Date(timeBegan);
-        }
+    static setTimeBegan(timeBegan: Date | number | string | undefined): Date {
+      if (typeof timeBegan == 'undefined') {
+        timeBegan = Date.now();
+      }
 
-        if (timeBegan instanceof Date) {
-            return timeBegan.getTime();
-        }
-        return timeBegan;
+      if (typeof timeBegan === 'string' || typeof timeBegan === 'number') {
+          timeBegan = new Date(timeBegan);
+      }
+
+      return timeBegan;
     }
 
     /**
@@ -101,11 +103,8 @@ export class Report extends BaseModel {
         return DistributionType.COMMUNITY;
     }
 
-    static fromJSON<T extends ReportJSON>(json: T): Report {
-        let report = Object.create(Report.prototype);
-
-        return Object.assign(report, json, {
-            timeBegan: this.setTimeBegan(json.timeBegan),
-        })
+    static fromJSON(json: string): Report {
+      const reportJSON = JSON.parse(json);
+      return new Report({...reportJSON});
     }
 }
