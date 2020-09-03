@@ -59,7 +59,6 @@ export class ApiClient {
 
       this.token = res.body["access_token"];
     } catch (err) {
-      // console.debug(err.response["error"]);
       throw new Error("Unable to get token");
     }
   }
@@ -154,7 +153,7 @@ export class ApiClient {
           .send(data);
 
         attempted = true;
-        break;
+        retry = false;
       } catch (err) {
         if (err instanceof SyntaxError) {
           response = err["rawResponse"];
@@ -178,7 +177,6 @@ export class ApiClient {
         }
 
         let err_msg: string = this.getErrorMessage(err.status, err.response);
-        // console.log(err.response.error);
         throw new Error(err_msg);
       }
     }
@@ -208,9 +206,14 @@ export class ApiClient {
    * @param response HTTP Response
    */
   getErrorMessage(status: number, response: request.Response): string {
-    let trace_id: string = response.header["trace-id"]!;
-    let side: string = status < 500 ? "Client" : "Server";
-    let message: string = `${status} ${side} Error (Trade-Id: ${trace_id})`;
+    let message: string;
+    try {
+      let traceId: string = response.header["trace-id"]!;
+      let side: string = status < 500 ? "Client" : "Server";
+      message = `${status} ${side} Error (Trade-Id: ${traceId})`;
+    } catch (err) {
+      message = "Unknown Error.";
+    }
     return message;
   }
 
