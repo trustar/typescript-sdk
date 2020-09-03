@@ -21,12 +21,12 @@ export class Tag extends BaseModel {
      * @param [id] The ID of the tag.
      * @param [enclaveId] The ID of the enclave associated with the tag.
      */
-    constructor({name, id, enclaveId}: {name: string, id?: string, enclaveId?: string}) {
+    constructor(tag: TagJSON) {
         
         super();
-        this.name = name;
-        this.id = id;
-        this.enclaveId = enclaveId;
+        this.name = tag.name;
+        this.id = tag.id;
+        this.enclaveId = tag.enclaveId;
     }
 
     static fromJSON(json: string): Tag {
