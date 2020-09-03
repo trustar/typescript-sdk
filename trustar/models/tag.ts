@@ -29,8 +29,8 @@ export class Tag extends BaseModel {
         this.enclaveId = enclaveId;
     }
 
-    static fromJSON<TagJSON>(json: TagJSON): Tag {
-        let tag = Object.create(Tag.prototype);
-        return Object.assign(tag, json);
+    static fromJSON(json: string): Tag {
+        const tagJSON = JSON.parse(json);
+        return new Tag({...tagJSON});
     }
 }
