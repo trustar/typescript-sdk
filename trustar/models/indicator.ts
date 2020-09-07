@@ -19,8 +19,8 @@ export interface IndicatorJSON {
     sightings?: number;
     source?: string;
     notes?: string;
-    tags?: object;
-    enclaveIds?: object;
+    tags?: Tag[];
+    enclaveIds?: string[];
 }
 
 /**
@@ -43,8 +43,8 @@ export class Indicator extends BaseModel {
     sightings?: number;
     source?: string;
     notes?: string;
-    tags?: Array<Tag>;
-    enclaveIds?: Array<string>;
+    tags?: Tag[];
+    enclaveIds?: string[];
 
 
     /**
@@ -66,30 +66,27 @@ export class Indicator extends BaseModel {
      * @param [enclaveIds] A list of enclaves that the indicator is found in.
      * 
      */
-    constructor({value, type, priorityLevel, correlationCount, whiteListed, weight, reason, firstSeen, 
-        lastSeen, sightings, source, notes, tags, enclaveIds}: {value: string, type?: string, priorityLevel?: string, 
-        correlationCount?: number, whiteListed?: boolean, weight?: number, reason?: string, firstSeen?: number, lastSeen?: number,
-        sightings?: number, source?: string, notes?: string, tags?: Array<Tag>, enclaveIds?: Array<string>}) {
+    constructor(indicator: IndicatorJSON) {
             
             super();
-            this.value = value;
-            this.type = type;
-            this.priorityLevel = priorityLevel;
-            this.correlationCount = correlationCount;
-            this.whiteListed = whiteListed;
-            this.weight = weight;
-            this.reason = reason;
-            this.firstSeen = firstSeen;
-            this.lastSeen = lastSeen;
-            this.sightings = sightings;
-            this.source = source;
-            this.notes = notes;
-            this.tags = tags;
-            this.enclaveIds = enclaveIds;
+            this.value = indicator.value;
+            this.type =  indicator.type;
+            this.priorityLevel = indicator.priorityLevel;
+            this.correlationCount = indicator.correlationCount;
+            this.whiteListed = indicator.whiteListed;
+            this.weight = indicator.weight;
+            this.reason = indicator.reason;
+            this.firstSeen = indicator.firstSeen;
+            this.lastSeen = indicator.lastSeen;
+            this.sightings = indicator.sightings;
+            this.source = indicator.source;
+            this.notes = indicator.notes;
+            this.tags = indicator.tags ? Indicator.decodeTags(indicator.tags) : undefined;
+            this.enclaveIds = indicator.enclaveIds;
         }
 
-    static decodeTags(tagArray: Array<TagJSON>) {
-        return tagArray.forEach(tag => new Tag(tag));
+    static decodeTags(tagArray: TagJSON[]): Tag[] {
+        return tagArray.map(tag => new Tag(tag));
     }
 
     static fromJSON<T extends IndicatorJSON>(json: T): Indicator {
