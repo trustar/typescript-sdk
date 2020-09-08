@@ -159,17 +159,5 @@ describe('BaseModel', function() {
       expect(indicatorFromJson.enclaveIds).to.eql(enclaveIds);
       expect(indicatorFromJson).to.be.instanceOf(Indicator.Indicator);
     })
-
-    it('Weight can only be 1 or 0', function () {
-
-      let indicator = Object.create(Indicator.Indicator.prototype);
-      let badValue = 2;
-
-      let x = Object.assign(indicator, {
-        value: 'IOC',
-        weight: badValue
-      });
-      console.log(x);
-    })
   })
 })
