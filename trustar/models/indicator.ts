@@ -11,7 +11,7 @@ export interface IndicatorJSON {
     type?: string;
     priorityLevel?: string;
     correlationCount?: number;
-    whiteListed?: boolean;
+    whitelisted?: boolean;
     weight?: number;
     reason?: string;
     firstSeen?: number;
@@ -29,13 +29,13 @@ export interface IndicatorJSON {
  */
 export class Indicator extends BaseModel {
 
-    static readonly types = Object.keys(IndicatorType).map(k => IndicatorType[k as any])
+    static readonly types = Object.keys(IndicatorType).map(k => IndicatorType[k])
 
     value: string;
     type?: string;
     priorityLevel?: string;
     correlationCount?: number;
-    whiteListed?: boolean;
+    whitelisted?: boolean;
     weight?: number = 1 | 0;
     reason?: string;
     firstSeen?: number;
@@ -73,7 +73,7 @@ export class Indicator extends BaseModel {
             this.type =  indicator.type;
             this.priorityLevel = indicator.priorityLevel;
             this.correlationCount = indicator.correlationCount;
-            this.whiteListed = indicator.whiteListed;
+            this.whitelisted = indicator.whitelisted;
             this.weight = indicator.weight;
             this.reason = indicator.reason;
             this.firstSeen = indicator.firstSeen;
@@ -89,11 +89,9 @@ export class Indicator extends BaseModel {
         return tagArray.map(tag => new Tag(tag));
     }
 
-    static fromJSON<T extends IndicatorJSON>(json: T): Indicator {
-        let indicator = Object.create(Indicator.prototype)
-        return Object.assign(indicator, json, {
-            tags: this.decodeTags((json.tags as Array<TagJSON>))
-        })
+    static fromJSON(json): Indicator {
+        const indicatorJSON = JSON.parse(json);
+        return new Indicator(indicatorJSON);
     }
 }
 
