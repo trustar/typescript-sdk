@@ -140,11 +140,10 @@ describe('BaseModel', function() {
   });
 
   describe('Indicator', function () {
-    let indicator = Object.create(Indicator.Indicator.prototype);
+
+    let indicatorFromJson = Indicator.Indicator.fromJSON(indicatorJson);
 
     it('Create Indicator object from JSON', function () {
-
-      let indicatorFromJson = Indicator.Indicator.fromJSON(indicatorJson);
 
       expect(indicatorFromJson.value).to.equal(indicatorValue);
       expect(indicatorFromJson.type).to.equal(indicatorType);
@@ -159,6 +158,18 @@ describe('BaseModel', function() {
       expect(indicatorFromJson.tags).to.eql(indicatorTags);
       expect(indicatorFromJson.enclaveIds).to.eql(enclaveIds);
       expect(indicatorFromJson).to.be.instanceOf(Indicator.Indicator);
+    })
+
+    it('Weight can only be 1 or 0', function () {
+
+      let indicator = Object.create(Indicator.Indicator.prototype);
+      let badValue = 2;
+
+      let x = Object.assign(indicator, {
+        value: 'IOC',
+        weight: badValue
+      });
+      console.log(x);
     })
   })
 })

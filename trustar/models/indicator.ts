@@ -36,7 +36,7 @@ export class Indicator extends BaseModel {
     priorityLevel?: string;
     correlationCount?: number;
     whitelisted?: boolean;
-    weight?: number = 1 | 0;
+    weight?: number;
     reason?: string;
     firstSeen?: number;
     lastSeen?: number;

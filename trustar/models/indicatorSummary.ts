@@ -28,7 +28,7 @@ export class IndicatorSummary extends BaseModel {
     updated?: number;
     description?: string;
     attributes?: IndicatorAttribute[];
-    severityLevel?: number = 0 | 1 | 2 | 3;
+    severityLevel?: number;
 
 
     /**
@@ -133,6 +133,7 @@ class IndicatorAttribute extends BaseModel {
     constructor(indicatorAttribute: IndicatorAttributeJSON) {
             
             super();
+            
             this.name = indicatorAttribute.name;
             this.value = indicatorAttribute.value;
             this.logicalType = indicatorAttribute.logicalType;

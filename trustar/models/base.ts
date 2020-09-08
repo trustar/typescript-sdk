@@ -19,7 +19,15 @@ export abstract class BaseModel {
    * Removes nulls
    * @returns Calling object with null and undefined values removed.
    */
-  removeNulls<T>(): T {
-    return Object.assign(({} as T), Object.keys(this).map(key => this[key] == null && delete this[key]));
+  removeNulls() {
+    
+    const obj = Object.create(this);
+    for (const [key, value] of Object.entries(this)) {
+      if (value && value.length !== 0) {
+        obj[key] = value;
+      }
+    }
+
+    return obj;
   }
 }
