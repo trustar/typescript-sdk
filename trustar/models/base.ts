@@ -17,7 +17,7 @@ export abstract class BaseModel {
 
   /**
    * Removes nulls
-   * @returns Nothing. The object is edited in place. No new object is created.
+   * @returns Calling object with null and undefined values removed.
    */
   removeNulls<T>(): T {
     return Object.assign(({} as T), Object.keys(this).map(key => this[key] == null && delete this[key]));
