@@ -25,7 +25,7 @@ export class NumberedPage<T> {
         }
 
         hasMorePages() {
-            if (!(this.hasNext == undefined)) {
+            if (!(this.hasNext === undefined || this.hasNext === null)) {
                 return this.hasNext
             }
             let totalPages = this.getTotalPages();
