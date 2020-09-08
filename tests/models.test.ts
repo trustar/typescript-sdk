@@ -17,50 +17,22 @@ describe('BaseModel', function() {
 
   // Tests for all classes which inherit from BaseModel
 
-
-  // Enclave attributes
-  const enclaveIDA = '111e-222d-333c-444b-555a';
-  const enclaveIDB = '115e-224d-333c-442b-551a';
-  const enclaveName = 'Test Enclave Name';
-  const enclaveType = 'PRIVATE';
-  const enclaveJson = JSON.stringify({id: enclaveIDA,
-                                      name: enclaveName, 
-                                      type: enclaveType});
-
   const firstSeen = 494035200000;
   const lastSeen = 1601942400000;
 
-  // Tag attributes
-  const tagAName = 'Bad Indicator BAD!!';
-  const tagAID = 'Bad Indicator BAD!!';
-  const tagBName = 'Worse Indicator!';
-  const tagBID = 'Worse Indicator!';
-  const tagA = new Tag.Tag({
-    name: tagAName,
-    id: tagAID,
-    enclaveId: enclaveIDA
-  });
-  const tagB = new Tag.Tag({
-    name: tagBName,
-    id: tagBID,
-    enclaveId: enclaveIDB
-  });
-
-  // Indicator attributes
-  const indicatorValue = '8.8.8.8';
-  const type = 'IP';
-  const priorityLevel = 'HIGH';
-  const correlationCount = 34;
-  const whitelisted = false;
-  const weight = 1;
-  const reason = 'Just because';
-  const sightings = 200;
-  const source = 'VirusTotal';
-  const notes = 'Nothing to see here.';
-  const indicatorTags = [tagA, tagB];
-  const enclaveIds = [enclaveIDA, enclaveIDB];
+    // Enclave attributes
+    const enclaveIDA = '111e-222d-333c-444b-555a';
+    const enclaveIDB = '115e-224d-333c-442b-551a';
+    const enclaveName = 'Test Enclave Name';
+    const enclaveType = 'PRIVATE';
+    const enclaveJson = JSON.stringify({
+      id: enclaveIDA,
+      name: enclaveName,
+      type: enclaveType
+    });
 
   describe('Enclave', function() {
+
     let enclave = Object.create(Enclave.Enclave.prototype);
 
     it('Create Enclave object from JSON string', function() {
@@ -74,6 +46,7 @@ describe('BaseModel', function() {
     })
 
     it('removeNulls should remove undefined field from Object', function() {
+
       let enclaveNoName = Object.assign(enclave, {
         id: enclaveIDA,
         name: undefined,
@@ -84,6 +57,7 @@ describe('BaseModel', function() {
     })
 
     it('removeNulls should remove null field from Object', function() {
+
       let enclaveNoName = Object.assign(enclave, {
         id: enclaveIDA,
         name: null,
@@ -119,7 +93,72 @@ describe('BaseModel', function() {
     })
   })
 
-  describe('Indicator', function () {
+  // Tag attributes
+  const tagAName = 'Bad Indicator BAD!!';
+  const tagAID = 'Bad Indicator BAD!!';
+  const tagBName = 'Worse Indicator!';
+  const tagBID = 'Worse Indicator!';
+  const tagA = new Tag.Tag({
+    name: tagAName,
+    id: tagAID,
+    enclaveId: enclaveIDA
+  });
+  const tagB = new Tag.Tag({
+    name: tagBName,
+    id: tagBID,
+    enclaveId: enclaveIDB
+  });
 
+  // Indicator attributes
+  const indicatorValue = '8.8.8.8';
+  const indicatorType = 'IP';
+  const priorityLevel = 'HIGH';
+  const correlationCount = 34;
+  const whitelisted = false;
+  const weight = 1;
+  const reason = 'Just because';
+  const sightings = 200;
+  const indicatorSource = 'VirusTotal';
+  const notes = 'Nothing to see here.';
+  const indicatorTags = [tagA, tagB];
+  const enclaveIds = [enclaveIDA, enclaveIDB];
+  const indicatorJson = JSON.stringify({
+    value: indicatorValue,
+    type: indicatorType,
+    priorityLevel: priorityLevel,
+    correlationCount: correlationCount,
+    whitelisted: whitelisted,
+    weight: weight,
+    reason: reason,
+    firstSeen: firstSeen,
+    lastSeen: lastSeen,
+    sightings: sightings,
+    source: indicatorSource,
+    notes: notes,
+    tags: indicatorTags,
+    enclaveIds: enclaveIds
+  });
+
+  describe('Indicator', function () {
+    let indicator = Object.create(Indicator.Indicator.prototype);
+
+    it('Create Indicator object from JSON', function () {
+
+      let indicatorFromJson = Indicator.Indicator.fromJSON(indicatorJson);
+
+      expect(indicatorFromJson.value).to.equal(indicatorValue);
+      expect(indicatorFromJson.type).to.equal(indicatorType);
+      expect(indicatorFromJson.priorityLevel).to.equal(priorityLevel);
+      expect(indicatorFromJson.correlationCount).to.equal(correlationCount);
+      expect(indicatorFromJson.whitelisted).to.equal(whitelisted);
+      expect(indicatorFromJson.weight).to.equal(weight);
+      expect(indicatorFromJson.reason).to.equal(reason);
+      expect(indicatorFromJson.sightings).to.equal(sightings);
+      expect(indicatorFromJson.source).to.equal(indicatorSource);
+      expect(indicatorFromJson.notes).to.equal(notes);
+      expect(indicatorFromJson.tags).to.eql(indicatorTags);
+      expect(indicatorFromJson.enclaveIds).to.eql(enclaveIds);
+      expect(indicatorFromJson).to.be.instanceOf(Indicator.Indicator);
+    })
   })
 })
