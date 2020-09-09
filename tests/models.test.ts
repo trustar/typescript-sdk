@@ -63,7 +63,7 @@ describe('BaseModel', function () {
         name: null,
         type: enclaveType
       });
-      console.log(enclaveNoName instanceof Enclave.Enclave)
+
       enclaveNoName.removeNulls()
       expect(enclaveNoName).to.not.have.keys({ name: null });
     })
