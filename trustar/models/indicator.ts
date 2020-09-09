@@ -85,10 +85,22 @@ export class Indicator extends BaseModel {
             this.enclaveIds = indicator.enclaveIds;
         }
 
+    
+    /**
+     * Decodes tags
+     * @param tagArray An array of objects representing tags.
+     * @returns tags An array of Tag objects.
+     */
     static decodeTags(tagArray: TagJSON[]): Tag[] {
         return tagArray.map(tag => new Tag(tag));
     }
 
+
+    /**
+     * FromJSON
+     * @param json A JSON string representing an indicator.
+     * @returns json An Indicator object.
+     */
     static fromJSON(json): Indicator {
         const indicatorJSON = JSON.parse(json);
         return new Indicator(indicatorJSON);

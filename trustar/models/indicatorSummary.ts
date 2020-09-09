@@ -63,10 +63,22 @@ export class IndicatorSummary extends BaseModel {
         this.severityLevel = indicatorSummary.severityLevel;
     }
 
-    static decodeAttributes(tagArray: IndicatorAttributeJSON[]): IndicatorAttribute[] {
-        return tagArray.map(attribute => new IndicatorAttribute(attribute));
+
+    /**
+     * Decodes attributes
+     * @param attrArray An array of objects representing indicator attributes.
+     * @returns attributes An array of IndicatorAttribute objects.
+     */
+    static decodeAttributes(attrArray: IndicatorAttributeJSON[]): IndicatorAttribute[] {
+        return attrArray.map(attribute => new IndicatorAttribute(attribute));
     }
 
+
+    /**
+     * FromJSON
+     * @param json 
+     * @returns json 
+     */
     static fromJSON(json: string): IndicatorSummary {
         const summaryJSON = JSON.parse(json);
         return new IndicatorSummary(summaryJSON);
@@ -98,6 +110,12 @@ export class IndicatorScore extends BaseModel {
         this.value = indicatorScore.value;
     }
 
+
+    /**
+     * FromJSON
+     * @param json A JSON string representing and indicator score.
+     * @returns json An IndicatorScore object.
+     */
     static fromJSON(json: string): IndicatorScore {
         const scoreJSON = JSON.parse(json);
         return new IndicatorScore(scoreJSON);
@@ -141,6 +159,12 @@ export class IndicatorAttribute extends BaseModel {
 
         }
 
+    
+    /**
+     * FromJSON
+     * @param json A JSON string representing an indicator attribute.
+     * @returns An IndicatorAttribute object.
+     */
     static fromJSON(json: string) {
         const indicatorAttributeJSON = JSON.parse(json);
         return new IndicatorAttribute(indicatorAttributeJSON);

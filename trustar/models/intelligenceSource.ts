@@ -27,6 +27,12 @@ export class IntelligenceSource extends BaseModel {
         this.name = intelligenceSource.name;
     }
 
+
+    /**
+     * FromJSON
+     * @param json A JSON string representing an intelligence source. 
+     * @returns A =n IntelligenceSource object.
+     */
     static fromJSON(json: string): IntelligenceSource {
         const intelSourceJSON = JSON.parse(json);
         return new IntelligenceSource(intelSourceJSON);
