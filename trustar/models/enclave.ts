@@ -45,8 +45,6 @@ export class Enclave extends BaseModel {
  */
 export class EnclavePermissions extends Enclave {
 
-  name?: string;
-  type?: string;
   read?: boolean;
   create?: boolean;
   update?: boolean;
