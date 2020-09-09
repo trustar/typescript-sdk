@@ -8,19 +8,19 @@ import { Tag, TagJSON } from "./tag"
  */
 export interface IndicatorJSON {
   value: string;
-  type?: string;
-  priorityLevel?: string;
-  correlationCount?: number;
-  whitelisted?: boolean;
-  weight?: number;
-  reason?: string;
-  firstSeen?: number;
-  lastSeen?: number;
-  sightings?: number;
-  source?: string;
-  notes?: string;
-  tags?: Tag[];
-  enclaveIds?: string[];
+  type?: string | null;
+  priorityLevel?: string | null;
+  correlationCount?: number | null;
+  whitelisted?: boolean | null;
+  weight?: number | null;
+  reason?: string | null;
+  firstSeen?: number | null;
+  lastSeen?: number | null;
+  sightings?: number | null;
+  source?: string | null;
+  notes?: string | null;
+  tags?: Tag[] | null;
+  enclaveIds?: string[] | null;
 }
 
 /**
@@ -32,19 +32,19 @@ export class Indicator extends BaseModel {
   static readonly types = Object.keys(IndicatorType).map(k => IndicatorType[k])
 
   value: string;
-  type?: string;
-  priorityLevel?: string;
-  correlationCount?: number;
-  whitelisted?: boolean;
-  weight?: number;
-  reason?: string;
-  firstSeen?: number;
-  lastSeen?: number;
-  sightings?: number;
-  source?: string;
-  notes?: string;
-  tags?: Tag[];
-  enclaveIds?: string[];
+  type?: string | null;
+  priorityLevel?: string | null;
+  correlationCount?: number | null;
+  whitelisted?: boolean | null;
+  weight?: number | null;
+  reason?: string | null;
+  firstSeen?: number | null;
+  lastSeen?: number | null;
+  sightings?: number | null;
+  source?: string | null;
+  notes?: string | null;
+  tags?: Tag[] | null;
+  enclaveIds?: string[] | null;
 
 
   /**

@@ -3,16 +3,16 @@ import { IdType, DistributionType } from "./enum";
 
 
 export interface ReportJSON {
-  id?: string;
-  title?: string;
-  body?: string;
+  id?: string | null;
+  title?: string | null;
+  body?: string | null;
   timeBegan?: Date | string | number;
-  externalId?: string;
-  externalUrl?: string;
-  isEnclave?: boolean;
-  enclaveIds?: string[] | string;
-  created?: number;
-  updated?: number;
+  externalId?: string | null;
+  externalUrl?: string | null;
+  isEnclave?: boolean | null;
+  enclaveIds?: string[] | string | null;
+  created?: number | null;
+  updated?: number | null;
 }
 
 /**
@@ -20,16 +20,16 @@ export interface ReportJSON {
  */
 export class Report extends BaseModel {
 
-  id?: string;
-  title?: string;
-  body?: string;
-  timeBegan?: Date;
-  externalId?: string;
-  externalUrl?: string;
-  isEnclave?: boolean = true;
-  enclaveIds?: string[];
-  created?: number;
-  updated?: number;
+  id?: string | null;
+  title?: string | null;
+  body?: string | null;
+  timeBegan?: Date | string | number;
+  externalId?: string | null;
+  externalUrl?: string | null;
+  isEnclave?: boolean | null;
+  enclaveIds?: string[] | string | null;
+  created?: number | null;
+  updated?: number | null;
 
 
   /**

@@ -3,32 +3,32 @@ import { IntelligenceSource, IntelligenceSourceJSON } from "./intelligenceSource
 
 
 export interface IndicatorSummaryJSON {
-  value?: string;
-  indicatorType?: string;
-  reportId?: string;
-  enclaveId?: string;
-  source?: object;
-  score?: IndicatorScore;
-  created?: number;
-  updated?: number;
-  description?: string;
-  attributes?: IndicatorAttribute[];
-  severityLevel?: number;
+  value?: string | null;
+  indicatorType?: string | null;
+  reportId?: string | null;
+  enclaveId?: string | null;
+  source?: object | null;
+  score?: IndicatorScore | null;
+  created?: number | null;
+  updated?: number | null;
+  description?: string | null;
+  attributes?: IndicatorAttribute[] | null;
+  severityLevel?: number | null;
 }
 
 export class IndicatorSummary extends BaseModel {
 
-  value?: string;
-  indicatorType?: string;
-  reportId?: string;
-  enclaveId?: string;
-  source?: IntelligenceSource;
-  score?: IndicatorScore;
-  created?: number;
-  updated?: number;
-  description?: string;
-  attributes?: IndicatorAttribute[];
-  severityLevel?: number;
+  value?: string | null;
+  indicatorType?: string | null;
+  reportId?: string | null;
+  enclaveId?: string | null;
+  source?: object | null;
+  score?: IndicatorScore | null;
+  created?: number | null;
+  updated?: number | null;
+  description?: string | null;
+  attributes?: IndicatorAttribute[] | null;
+  severityLevel?: number | null;
 
 
   /**
@@ -86,8 +86,8 @@ export class IndicatorSummary extends BaseModel {
 }
 
 interface IndicatorScoreJSON {
-  name?: string;
-  value?: string;
+  name?: string | null;
+  value?: string | null;
 }
 
 /**
@@ -95,8 +95,8 @@ interface IndicatorScoreJSON {
  */
 export class IndicatorScore extends BaseModel {
 
-  name?: string;
-  value?: string;
+  name?: string | null;
+  value?: string | null;
 
   /**
    * Creates an instance of indicator score.
@@ -124,10 +124,10 @@ export class IndicatorScore extends BaseModel {
 
 
 interface IndicatorAttributeJSON {
-  name?: string;
-  value?: string;
-  logicalType?: string;
-  description?: string;
+  name?: string | null;
+  value?: string | null;
+  logicalType?: string | null;
+  description?: string | null;
 }
 
 /**
@@ -135,10 +135,10 @@ interface IndicatorAttributeJSON {
  */
 export class IndicatorAttribute extends BaseModel {
 
-  name?: string;
-  value?: string;
-  logicalType?: string;
-  description?: string;
+  name?: string | null;
+  value?: string | null;
+  logicalType?: string | null;
+  description?: string | null;
 
 
   /**

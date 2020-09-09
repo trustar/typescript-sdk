@@ -1,26 +1,31 @@
 
+export interface NumberedPageJSON<T> {
+  items?: Array<T> | null;
+  pageNumber?: number | null;
+  pageSize?: number | null;
+  totalElements?: number | null;
+  hasNext?: boolean | null;
+}
+
 /**
  * Numbered page
  * @template T 
  */
 export class NumberedPage<T> {
 
-  items?: Array<T>;
-  pageNumber?: number;
-  pageSize?: number;
-  totalElements?: number;
-  hasNext?: boolean;
+  items?: Array<T> | null;
+  pageNumber?: number | null;
+  pageSize?: number | null;
+  totalElements?: number | null;
+  hasNext?: boolean | null;
 
-  constructor({ items, pageNumber, pageSize, totalElements, hasNext }: {
-    items?: Array<T>,
-    pageNumber?: number, pageSize?: number, totalElements?: number, hasNext?: boolean
-  } = {}) {
+  constructor(numberedPage: NumberedPageJSON<T>) {
 
-    this.items = items;
-    this.pageNumber = pageNumber;
-    this.pageSize = pageSize;
-    this.totalElements = totalElements;
-    this.hasNext = hasNext;
+    this.items = numberedPage.items;
+    this.pageNumber = numberedPage.pageNumber;
+    this.pageSize = numberedPage.pageSize;
+    this.totalElements = numberedPage.totalElements;
+    this.hasNext = numberedPage.hasNext;
 
   }
 

@@ -2,8 +2,8 @@ import { BaseModel } from "./base"
 
 export interface TagJSON {
   name: string;
-  id?: string;
-  enclaveId?: string;
+  id?: string | null;
+  enclaveId?: string | null;
 }
 
 /**
@@ -11,8 +11,8 @@ export interface TagJSON {
  */
 export class Tag extends BaseModel {
   name: string;
-  id?: string;
-  enclaveId?: string;
+  id?: string | null;
+  enclaveId?: string | null;
 
 
   /**
@@ -29,6 +29,12 @@ export class Tag extends BaseModel {
     this.enclaveId = tag.enclaveId;
   }
 
+
+  /**
+   * Froms json
+   * @param json 
+   * @returns json 
+   */
   static fromJSON(json: string): Tag {
     const tagJSON = JSON.parse(json);
     return new Tag(tagJSON);

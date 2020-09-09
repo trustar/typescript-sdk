@@ -33,8 +33,6 @@ describe('BaseModel', function () {
 
   describe('Enclave', function () {
 
-    let enclave = Object.create(Enclave.Enclave.prototype);
-
     it('Create Enclave object from JSON string', function () {
 
       let enclaveFromJSON = Enclave.Enclave.fromJSON(enclaveJson);
@@ -47,7 +45,7 @@ describe('BaseModel', function () {
 
     it('removeNulls should remove undefined field from Object', function () {
 
-      let enclaveNoName = Object.assign(enclave, {
+      let enclaveNoName = new Enclave.Enclave({
         id: enclaveIDA,
         name: undefined,
         type: enclaveType
@@ -58,11 +56,14 @@ describe('BaseModel', function () {
 
     it('removeNulls should remove null field from Object', function () {
 
+      let enclave = Object.create(Enclave.Enclave.prototype);
+
       let enclaveNoName = Object.assign(enclave, {
         id: enclaveIDA,
         name: null,
         type: enclaveType
       });
+      console.log(enclaveNoName instanceof Enclave.Enclave)
       enclaveNoName.removeNulls()
       expect(enclaveNoName).to.not.have.keys({ name: null });
     })

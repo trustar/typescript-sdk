@@ -2,8 +2,8 @@ import { BaseModel } from "./base"
 
 
 export interface IntelligenceSourceJSON {
-  key?: string;
-  name?: string;
+  key?: string | null;
+  name?: string | null;
 }
 
 /**
@@ -11,8 +11,8 @@ export interface IntelligenceSourceJSON {
  */
 export class IntelligenceSource extends BaseModel {
 
-  key?: string;
-  name?: string;
+  key?: string | null;
+  name?: string | null;
 
 
   /**

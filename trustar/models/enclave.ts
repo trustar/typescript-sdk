@@ -3,11 +3,11 @@ import { BaseModel } from "./base"
 
 export interface EnclaveJSON {
   id: string;
-  name?: string;
-  type?: string;
-  read?: boolean;
-  create?: boolean;
-  update?: boolean;
+  name?: string | null;
+  type?: string | null;
+  read?: boolean | null;
+  create?: boolean | null;
+  update?: boolean | null;
 }
 
 /**
@@ -16,8 +16,8 @@ export interface EnclaveJSON {
 export class Enclave extends BaseModel {
 
   id: string;
-  name?: string;
-  type?: string;
+  name?: string | null;
+  type?: string | null;
 
 
   /**
@@ -51,9 +51,9 @@ export class Enclave extends BaseModel {
  */
 export class EnclavePermissions extends Enclave {
 
-  read?: boolean;
-  create?: boolean;
-  update?: boolean;
+  read?: boolean | null;
+  create?: boolean | null;
+  update?: boolean | null;
 
 
   /**
