@@ -74,9 +74,7 @@ describe('BaseModel', function() {
 
     it('Create EnclavePermissions object.', function () {
 
-      const read = true;
-      const write = true;
-      const update = true;
+      const read = true, write = true, update = true;
 
       let enclavePermissions = Object.assign(enclavePermissionsObj, {
         id: enclaveIDA,
