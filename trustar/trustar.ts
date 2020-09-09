@@ -123,15 +123,4 @@ export class TruStar {
   async ping() {
     return await this.apiClient.get("ping");
   }
-
-  // WILL DELETE THIS
-  async print() {
-    let res = await this.ping();
-    console.log(res);
-  }
 }
-
-// This will be removed also. Just for testing
-
-let ts = new TruStar();
-ts.print();
