@@ -11,8 +11,10 @@ export class NumberedPage<T> {
   totalElements?: number;
   hasNext?: boolean;
 
-  constructor({items, pageNumber, pageSize, totalElements, hasNext}: {items?: Array<T>,
-      pageNumber?: number, pageSize?: number, totalElements?: number, hasNext?: boolean} = {}) {
+  constructor({ items, pageNumber, pageSize, totalElements, hasNext }: {
+    items?: Array<T>,
+    pageNumber?: number, pageSize?: number, totalElements?: number, hasNext?: boolean
+  } = {}) {
 
     this.items = items;
     this.pageNumber = pageNumber;
@@ -22,22 +24,22 @@ export class NumberedPage<T> {
 
   }
 
-    getTotalPages() {
-        if (this.totalElements == undefined || this.pageSize == undefined) {
-            return
-        } 
-        return Math.ceil(this.totalElements / this.pageSize)
+  getTotalPages() {
+    if (this.totalElements == undefined || this.pageSize == undefined) {
+      return
+    }
+    return Math.ceil(this.totalElements / this.pageSize)
+  }
+
+  hasMorePages() {
+    if (!(this.hasNext === undefined || this.hasNext === null)) {
+      return this.hasNext
+    }
+    let totalPages = this.getTotalPages();
+    if (this.pageNumber == undefined || this.pageSize == undefined || totalPages == undefined) {
+      return
     }
 
-    hasMorePages() {
-        if (!(this.hasNext === undefined || this.hasNext === null)) {
-            return this.hasNext
-        }
-        let totalPages = this.getTotalPages();
-        if (this.pageNumber == undefined || this.pageSize == undefined || totalPages == undefined) {
-            return
-        }
-
-        return this.pageNumber + 1 < totalPages
-    }
+    return this.pageNumber + 1 < totalPages
+  }
 }

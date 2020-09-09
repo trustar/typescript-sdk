@@ -28,10 +28,10 @@ export class Enclave extends BaseModel {
    */
   constructor(enclave: EnclaveJSON) {
 
-      super();
-      this.id = enclave.id;
-      this.name = enclave.name;
-      this.type = enclave.type;
+    super();
+    this.id = enclave.id;
+    this.name = enclave.name;
+    this.type = enclave.type;
   }
 
 
@@ -41,8 +41,8 @@ export class Enclave extends BaseModel {
    * @returns An Enclave object.
    */
   static fromJSON(json: string): Enclave {
-      const enclaveJSON = JSON.parse(json);
-      return new Enclave(enclaveJSON);
+    const enclaveJSON = JSON.parse(json);
+    return new Enclave(enclaveJSON);
   }
 }
 
@@ -67,10 +67,10 @@ export class EnclavePermissions extends Enclave {
    */
   constructor(enclavePermissions: EnclaveJSON) {
 
-      super(enclavePermissions);
-      this.read = enclavePermissions.read;
-      this.create = enclavePermissions.create;
-      this.update = enclavePermissions.update;
-        
-    }
+    super(enclavePermissions);
+    this.read = enclavePermissions.read;
+    this.create = enclavePermissions.create;
+    this.update = enclavePermissions.update;
+
+  }
 }

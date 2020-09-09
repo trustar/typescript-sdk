@@ -13,29 +13,29 @@ const chai = require('chai');
 const should = chai.should();
 const expect = chai.expect;
 
-describe('BaseModel', function() {
+describe('BaseModel', function () {
 
   // Tests for all classes which inherit from BaseModel
 
   const firstSeen = 494035200000;
   const lastSeen = 1601942400000;
 
-    // Enclave attributes
-    const enclaveIDA = '111e-222d-333c-444b-555a';
-    const enclaveIDB = '115e-224d-333c-442b-551a';
-    const enclaveName = 'Test Enclave Name';
-    const enclaveType = 'PRIVATE';
-    const enclaveJson = JSON.stringify({
-      id: enclaveIDA,
-      name: enclaveName,
-      type: enclaveType
-    });
+  // Enclave attributes
+  const enclaveIDA = '111e-222d-333c-444b-555a';
+  const enclaveIDB = '115e-224d-333c-442b-551a';
+  const enclaveName = 'Test Enclave Name';
+  const enclaveType = 'PRIVATE';
+  const enclaveJson = JSON.stringify({
+    id: enclaveIDA,
+    name: enclaveName,
+    type: enclaveType
+  });
 
-  describe('Enclave', function() {
+  describe('Enclave', function () {
 
     let enclave = Object.create(Enclave.Enclave.prototype);
 
-    it('Create Enclave object from JSON string', function() {
+    it('Create Enclave object from JSON string', function () {
 
       let enclaveFromJSON = Enclave.Enclave.fromJSON(enclaveJson);
 
@@ -45,7 +45,7 @@ describe('BaseModel', function() {
       expect(enclaveFromJSON).to.be.instanceOf(Enclave.Enclave);
     })
 
-    it('removeNulls should remove undefined field from Object', function() {
+    it('removeNulls should remove undefined field from Object', function () {
 
       let enclaveNoName = Object.assign(enclave, {
         id: enclaveIDA,
@@ -53,10 +53,10 @@ describe('BaseModel', function() {
         type: enclaveType
       });
       enclaveNoName.removeNulls()
-      expect(enclaveNoName).to.not.have.keys({name: undefined});
+      expect(enclaveNoName).to.not.have.keys({ name: undefined });
     })
 
-    it('removeNulls should remove null field from Object', function() {
+    it('removeNulls should remove null field from Object', function () {
 
       let enclaveNoName = Object.assign(enclave, {
         id: enclaveIDA,
@@ -64,7 +64,7 @@ describe('BaseModel', function() {
         type: enclaveType
       });
       enclaveNoName.removeNulls()
-      expect(enclaveNoName).to.not.have.keys({name: null});
+      expect(enclaveNoName).to.not.have.keys({ name: null });
     })
   })
 
@@ -182,7 +182,7 @@ describe('BaseModel', function() {
   });
 
   describe('IndicatorAttribute', function () {
-    
+
     it('Create IndicatorAttribuyte from JSON', function () {
       let indicatorAttribute = IndicatorSummary.IndicatorAttribute.fromJSON(attributeAJSON);
       expect(indicatorAttribute).to.be.instanceOf(IndicatorSummary.IndicatorAttribute);
