@@ -8,11 +8,11 @@ export interface IndicatorSummaryJSON {
     reportId?: string;
     enclaveId?: string;
     source?: object;
-    score?: object;
+    score?: IndicatorScore;
     created?: number;
     updated?: number;
     description?: string;
-    attributes?: object[];
+    attributes?: IndicatorAttribute[];
     severityLevel?: number;
 }
 
@@ -81,7 +81,7 @@ interface IndicatorScoreJSON {
 /**
  * Indicator score
  */
-class IndicatorScore extends BaseModel {
+export class IndicatorScore extends BaseModel {
 
     name?: string;
     value?: string;
@@ -115,7 +115,7 @@ interface IndicatorAttributeJSON {
 /**
  * IndicatorAttribute
  */
-class IndicatorAttribute extends BaseModel {
+export class IndicatorAttribute extends BaseModel {
 
     name?: string;
     value?: string;
@@ -133,7 +133,7 @@ class IndicatorAttribute extends BaseModel {
     constructor(indicatorAttribute: IndicatorAttributeJSON) {
             
             super();
-            
+
             this.name = indicatorAttribute.name;
             this.value = indicatorAttribute.value;
             this.logicalType = indicatorAttribute.logicalType;

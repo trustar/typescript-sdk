@@ -158,6 +158,105 @@ describe('BaseModel', function() {
       expect(indicatorFromJson.tags).to.eql(indicatorTags);
       expect(indicatorFromJson.enclaveIds).to.eql(enclaveIds);
       expect(indicatorFromJson).to.be.instanceOf(Indicator.Indicator);
+      expect(indicatorFromJson.tags!.pop()).to.be.instanceOf(Tag.Tag);
+    })
+  })
+
+  // IndicatorAttribute attributes
+  const attributeAName = 'Indicator Type';
+  const attributeAValue = 'campaign_id';
+  const logicalAType = 'IP';
+
+  const attributeBName = 'Relations Count';
+  const attributeBValue = 0;
+  const logicalBType = 'Number of Relations';
+
+  const attributeAJSON = JSON.stringify({
+    name: attributeAName,
+    value: attributeAValue,
+    logicalType: logicalAType
+  });
+
+  const attributeBJSON = JSON.stringify({
+    name: attributeBName,
+    value: attributeBValue,
+    logicalType: logicalBType
+  });
+
+  describe('IndicatorAttribute', function () {
+    
+    it('Create IndicatorAttribuyte from JSON', function () {
+      let indicatorAttribute = IndicatorSummary.IndicatorAttribute.fromJSON(attributeAJSON);
+      expect(indicatorAttribute).to.be.instanceOf(IndicatorSummary.IndicatorAttribute);
+    })
+  })
+
+  // IntelligenceSource attributes
+  const sourceKey = 'virustotal';
+  const sourceName = 'Virus Total';
+
+  const intelSourceJSON = JSON.stringify({
+    key: sourceKey,
+    name: sourceName
+  })
+
+  const intelSource = IntelligenceSource.IntelligenceSource.fromJSON(intelSourceJSON);
+
+  // IndicatorScore attributes
+  const scoreName = 'Malicious Confidence';
+  const scoreValue = 'high';
+
+  const scoreJSON = JSON.stringify({
+    name: scoreName,
+    value: scoreValue
+  });
+
+  // IndicatorSummary attributes (that are different from or not in Indicator class)
+  const reportId = '666';
+  const indicatorScore = IndicatorSummary.IndicatorScore.fromJSON(scoreJSON);
+  const created = 494035200000;
+  const updated = 494035200001;
+  const description = 'Malware ATTACK';
+  const indicatorAttributeA = IndicatorSummary.IndicatorAttribute.fromJSON(attributeAJSON);
+  const indicatorAttributeB = IndicatorSummary.IndicatorAttribute.fromJSON(attributeBJSON);
+  const attributes = [indicatorAttributeA, indicatorAttributeB];
+  const severityLevel = 3;
+
+  const indicatorSummaryJSON = JSON.stringify({
+    value: indicatorValue,
+    indicatorType: indicatorType,
+    reportId: reportId,
+    enclaveId: enclaveIDA,
+    source: intelSource,
+    score: indicatorScore,
+    created: created,
+    updated: updated,
+    description: description,
+    attributes: attributes,
+    severityLevel: severityLevel
+  })
+
+  describe('IndicatorSummary', function () {
+
+    let indicatorSummary = IndicatorSummary.IndicatorSummary.fromJSON(indicatorSummaryJSON);
+
+    it('Create IndicatorSummary from JSON', function () {
+
+      expect(indicatorSummary.value).to.equal(indicatorValue);
+      expect(indicatorSummary.indicatorType).to.equal(indicatorType);
+      expect(indicatorSummary.reportId).to.equal(reportId);
+      expect(indicatorSummary.enclaveId).to.equal(enclaveIDA);
+      expect(indicatorSummary.source).to.eql(intelSource);
+      expect(indicatorSummary.score).to.eql(indicatorScore);
+      expect(indicatorSummary.created).to.equal(created);
+      expect(indicatorSummary.updated).to.equal(updated);
+      expect(indicatorSummary.description).to.equal(description);
+      expect(indicatorSummary.attributes).to.eql(attributes);
+      expect(indicatorSummary.severityLevel).to.equal(severityLevel);
+      expect(indicatorSummary).to.be.instanceOf(IndicatorSummary.IndicatorSummary);
+      expect(indicatorSummary.source).to.be.instanceOf(IntelligenceSource.IntelligenceSource);
+      expect(indicatorSummary.score).to.be.instanceOf(IndicatorSummary.IndicatorScore);
+      expect(indicatorSummary.attributes!.pop()).to.be.instanceOf(IndicatorSummary.IndicatorAttribute);
     })
   })
 })
