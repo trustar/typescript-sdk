@@ -67,11 +67,7 @@ export class Report extends BaseModel {
     this.created = report.created;
     this.updated = report.updated;
 
-    if (report.timeBegan !== undefined) {
-      this.timeBegan = Report.setTimeBegan(report.timeBegan);
-    } else {
-      this.timeBegan = report.timeBegan;
-    }
+    this.timeBegan = Report.setTimeBegan(report.timeBegan);
 
   }
 
@@ -86,7 +82,7 @@ export class Report extends BaseModel {
     }
 
     if (typeof timeBegan === 'string' || typeof timeBegan === 'number') {
-      timeBegan = new Date(timeBegan);
+      return new Date(timeBegan);
     }
 
     return timeBegan;

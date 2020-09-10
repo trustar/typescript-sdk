@@ -258,4 +258,67 @@ describe('BaseModel', function () {
       expect(indicatorSummary.attributes!.pop()).to.be.instanceOf(IndicatorSummary.IndicatorAttribute);
     })
   })
+
+  // Report Attributes
+  const reportTitle = 'Malicious Activity';
+  const reportBody = 'Some bad stuff happened today';
+  const timeBegan = new Date(1999, 11, 31); // JavaScript Date object uses 0-based counting for months.... WHY
+  const externalId = '123456789abc';
+  const externalUrl = 'https://goggle.com';
+  const isEnclave = true;
+  const reportFields = {
+    id: reportId,
+    title: reportTitle,
+    body: reportBody,
+    timeBegan: timeBegan,
+    externalId: externalId,
+    externalUrl: externalUrl,
+    isEnclave: isEnclave,
+    created: created,
+    updated: updated,
+    enclaveIds: enclaveIds
+  }
+  const reportJson = JSON.stringify(reportFields);
+
+  describe('Report', function () {
+
+    it('Create Report object from JSON', function () {
+      let report = Report.Report.fromJSON(reportJson);
+
+      expect(report.id).to.equal(reportId);
+      expect(report.title).to.equal(reportTitle);
+      expect(report.body).to.equal(reportBody);
+      expect(report.timeBegan).to.eql(timeBegan);
+      expect(report.externalId).to.equal(externalId);
+      expect(report.externalUrl).to.equal(externalUrl);
+      expect(report.isEnclave).to.equal(isEnclave);
+      expect(report.created).to.equal(created);
+      expect(report.updated).to.equal(updated);
+      expect(report.enclaveIds).to.eql(enclaveIds);
+      expect(report).to.be.instanceOf(Report.Report);
+      expect(timeBegan).to.be.instanceOf(Date)
+    })
+
+    it('timeBegan timestamp created if string, number, or not provided', function () {
+
+      let undefinedTimeBegan = Object.assign({}, reportFields, {
+        timeBegan: undefined
+      })
+      let reportNoTimeBegan = new Report.Report(undefinedTimeBegan);
+
+      let stringTimeBegan = Object.assign({}, reportFields, {
+        timeBegan: "July 28, 1985"
+      });
+      let reportStringTimeBegan = new Report.Report(stringTimeBegan);
+
+      let numberTimeBegan = Object.assign({}, reportFields, {
+        timeBegan: 1599774310467
+      });
+      let reportNumberTimeBegan = new Report.Report(numberTimeBegan);
+
+      expect(reportNoTimeBegan.timeBegan).to.be.instanceOf(Date);
+      expect(reportStringTimeBegan.timeBegan).to.be.instanceOf(Date);
+      expect(reportNumberTimeBegan.timeBegan).to.be.instanceOf(Date);
+    })
+  })
 })
