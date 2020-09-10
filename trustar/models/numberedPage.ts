@@ -30,7 +30,7 @@ export class NumberedPage<T> {
   }
 
   getTotalPages() {
-    if (this.totalElements == undefined || this.pageSize == undefined) {
+    if (this.totalElements == undefined || this.pageSize == undefined || this.pageSize === 0) {
       return
     }
     return Math.ceil(this.totalElements / this.pageSize)
